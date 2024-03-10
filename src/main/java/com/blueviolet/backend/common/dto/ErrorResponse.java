@@ -1,6 +1,6 @@
-package com.blueviolet.backend.dto;
+package com.blueviolet.backend.common.dto;
 
-import com.blueviolet.backend.error.ErrorCode;
+import com.blueviolet.backend.common.error.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

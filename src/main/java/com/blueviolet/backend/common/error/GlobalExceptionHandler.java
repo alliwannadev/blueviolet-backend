@@ -1,6 +1,6 @@
-package com.blueviolet.backend.error;
+package com.blueviolet.backend.common.error;
 
-import com.blueviolet.backend.dto.ErrorResponse;
+import com.blueviolet.backend.common.dto.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

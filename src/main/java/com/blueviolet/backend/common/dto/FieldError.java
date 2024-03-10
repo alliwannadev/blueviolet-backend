@@ -1,4 +1,4 @@
-package com.blueviolet.backend.dto;
+package com.blueviolet.backend.common.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

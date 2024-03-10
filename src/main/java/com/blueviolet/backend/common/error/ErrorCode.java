@@ -1,4 +1,4 @@
-package com.blueviolet.backend.error;
+package com.blueviolet.backend.common.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

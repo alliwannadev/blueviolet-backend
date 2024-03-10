@@ -1,6 +1,6 @@
-package com.blueviolet.backend.error;
+package com.blueviolet.backend.common.error;
 
-import com.blueviolet.backend.dto.FieldError;
+import com.blueviolet.backend.common.dto.FieldError;
 import lombok.Getter;
 
 import java.util.ArrayList;
