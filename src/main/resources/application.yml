@@ -18,3 +18,6 @@ spring:
         format_sql: true
         show_sql: true
 
+jwt:
+  access_secret: Ymx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsLWFjY2Vzcy1zZWNyZXQK
+  refresh_secret: cmVmcmVzaC1zZWNyZXQtYmx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsCg=
