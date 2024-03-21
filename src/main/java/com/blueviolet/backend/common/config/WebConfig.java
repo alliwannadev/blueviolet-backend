@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .toList();
         List<String> excludePathPatterns =
                 List.of(
-                        "/v1/sign-up", "/v1/sign-in", "/v1/token-regeneration"
+                        "/api/v1/sign-up", "/api/v1/sign-in", "/api/v1/token-regeneration"
                 );
 
         registry.addInterceptor(
