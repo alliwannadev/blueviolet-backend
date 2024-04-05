@@ -23,7 +23,7 @@ public class AuthControllerV1 {
 
     private final AuthService authService;
 
-    @PostMapping(ApiPathsV1.V1_SIGN_UP)
+    @PostMapping(AuthApiPathsV1.V1_SIGN_UP)
     public OkResponse<Void> signUp(
             @RequestBody @Valid SignUpRequestV1 signUpRequestV1
     ) {
@@ -31,7 +31,7 @@ public class AuthControllerV1 {
         return OkResponse.of("회원가입을 완료했습니다.");
     }
 
-    @PostMapping(ApiPathsV1.V1_SIGN_IN)
+    @PostMapping(AuthApiPathsV1.V1_SIGN_IN)
     public OkResponse<TokenResponseV1> signIn(
             @RequestBody @Valid SignInRequestV1 signInRequestV1
     ) {
@@ -46,7 +46,7 @@ public class AuthControllerV1 {
         );
     }
 
-    @PostMapping(ApiPathsV1.V1_SIGN_OUT)
+    @PostMapping(AuthApiPathsV1.V1_SIGN_OUT)
     public OkResponse<Void> signOut(
             @RequestBody @Valid SignOutRequestV1 signOutRequestV1
     ) {
@@ -56,7 +56,7 @@ public class AuthControllerV1 {
         return OkResponse.of("로그아웃을 완료했습니다.");
     }
 
-    @PostMapping(ApiPathsV1.V1_TOKEN_REGENERATION)
+    @PostMapping(AuthApiPathsV1.V1_TOKEN_REGENERATION)
     public OkResponse<TokenResponseV1> regenerateAccessTokenByRefreshToken(
             @Valid @RequestBody TokenRegenerationRequestV1 tokenRegenerationRequestV1
     ) {

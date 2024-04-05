@@ -19,7 +19,7 @@ public class UserControllerV1 {
 
     private final UserService userService;
 
-    @GetMapping(ApiPathsV1.V1_USERS)
+    @GetMapping(UserApiPathsV1.V1_USERS)
     public OkResponse<List<GetUserResponseV1>> getUserList() {
         List<User> userList = userService.getUserList();
         return OkResponse.of(GetUserResponseV1.fromEntities(userList));

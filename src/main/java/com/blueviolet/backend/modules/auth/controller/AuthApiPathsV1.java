@@ -1,6 +1,6 @@
 package com.blueviolet.backend.modules.auth.controller;
 
-public final class ApiPathsV1 {
+public final class AuthApiPathsV1 {
 
     public static final String API_V1 = "/api/v1";
 
