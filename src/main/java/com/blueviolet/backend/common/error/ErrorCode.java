@@ -24,7 +24,7 @@ public enum ErrorCode {
     FORBIDDEN(403, "AUTH-002", "요청하신 리소스에 대한 접근 권한이 없습니다."),
     INVALID_TOKEN_VALUE(400, "AUTH-003", "잘못된 토큰 값을 입력하셨습니다."),
     REFRESH_TOKEN_NOT_FOUND(404, "AUTH-004", "요청하신 Refresh Token을 찾을 수 없습니다."),
-    INVALID_EMAIL_OR_PASSWORD(404, "AUTH-005", "이메일 또는 패스워드가 일치하지 않습니다.")
+    INVALID_EMAIL_OR_PASSWORD(400, "AUTH-005", "이메일 또는 패스워드가 일치하지 않습니다.")
     ;
 
     private final int status;
