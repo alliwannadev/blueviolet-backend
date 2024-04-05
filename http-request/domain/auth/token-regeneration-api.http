@@ -1,0 +1,7 @@
+### 토큰 재발급 API 호출
+POST {{host}}/api/v1/token-regeneration
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcxMTcxNjgxOH0.C_46qOtD8oBwYfOubkh6cnA89Z9BeroHIL_DdUGTTGQ"
+}

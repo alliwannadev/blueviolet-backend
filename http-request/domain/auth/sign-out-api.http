@@ -1,0 +1,8 @@
+### 로그아웃 API 호출
+POST {{host}}/api/v1/sign-out
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcwNjUzNjQ1NH0.KcV2oRZdbU3FBIpqdpcsACuH6QK5jzZuS236TpMAh-I
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcxMTcxNjgxOH0.C_46qOtD8oBwYfOubkh6cnA89Z9BeroHIL_DdUGTTGQ"
+}

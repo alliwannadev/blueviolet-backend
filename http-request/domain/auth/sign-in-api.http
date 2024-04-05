@@ -1,0 +1,8 @@
+### 로그인 API 호출
+POST {{host}}/api/v1/sign-in
+Content-Type: application/json
+
+{
+  "email": "tester@test.com",
+  "password": "123456"
+}
