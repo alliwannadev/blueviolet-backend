@@ -36,18 +36,13 @@ public class Category extends BaseTimeEntity {
 
     public static Category of(
             String name,
-            Category parentCategory,
             Integer level
     ) {
-        Category category = Category
+        return Category
                 .builder()
                 .name(name)
                 .level(level)
                 .build();
-
-        // 연관관계 설정
-        category.changeParentCategory(parentCategory);
-        return category;
     }
 
     // 연관관계 편의 메소드
