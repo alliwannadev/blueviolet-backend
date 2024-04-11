@@ -1,0 +1,25 @@
+POST http://localhost:8080/api/admin/v1/categories
+Content-Type: application/json
+
+{
+  "categories": [
+    {
+      "name": "남성",
+      "level": 1,
+      "categoryKey": "11",
+      "parentCategoryKey": null
+    },
+    {
+      "name": "상의",
+      "level": 2,
+      "categoryKey": "21",
+      "parentCategoryKey": "11"
+    },
+    {
+      "name": "반소매 티셔츠",
+      "level": 3,
+      "categoryKey": "31",
+      "parentCategoryKey": "21"
+    }
+  ]
+}
