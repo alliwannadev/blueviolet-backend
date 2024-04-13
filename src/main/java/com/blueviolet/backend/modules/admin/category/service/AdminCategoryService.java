@@ -1,6 +1,6 @@
 package com.blueviolet.backend.modules.admin.category.service;
 
-import com.blueviolet.backend.modules.admin.category.repository.AdminCategoryRepository;
+import com.blueviolet.backend.modules.category.repository.CategoryRepository;
 import com.blueviolet.backend.modules.admin.category.service.dto.CreateCategoryParam;
 import com.blueviolet.backend.modules.admin.category.service.dto.GetCategoryResult;
 import com.blueviolet.backend.modules.category.domain.Category;
@@ -14,7 +14,7 @@ import java.util.*;
 @Service
 public class AdminCategoryService {
 
-    private final AdminCategoryRepository adminCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public void createCategories(CreateCategoryParam createCategoryParam) {
@@ -41,14 +41,14 @@ public class AdminCategoryService {
             mappingTable.put(categoryDto.categoryKey(), category);
         }
 
-        adminCategoryRepository.saveAll(
+        categoryRepository.saveAll(
                 mappingTable.values()
         );
     }
 
     @Transactional(readOnly = true)
     public List<GetCategoryResult> getCategories() {
-        return adminCategoryRepository.findAll()
+        return categoryRepository.findAll()
                 .stream()
                 .map(GetCategoryResult::fromEntity)
                 .toList();
