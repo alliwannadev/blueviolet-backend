@@ -47,6 +47,10 @@ public class OkResponse<T> {
                 .build();
     }
 
+    public static OkResponse<Void> empty() {
+        return of("API 요청을 완료하였습니다.");
+    }
+
     public static <T> OkResponse<T> of(
             T data,
             String message

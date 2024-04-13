@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/admin/v1/categories
+Content-Type: application/json

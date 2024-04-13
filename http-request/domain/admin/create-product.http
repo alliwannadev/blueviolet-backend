@@ -1,0 +1,51 @@
+POST http://localhost:8080/api/admin/v1/products
+Content-Type: application/json
+
+{
+  "categoryId": 3,
+  "productGroupName": "아디다스 티셔츠",
+  "productList": [
+    {
+      "productCode": "ADIDAS-CLOTH-001",
+      "productName": "아디다스 티셔츠 - 블랙",
+      "modelName": "MODEL-NAME-001",
+      "selectedOptionList": [
+        {
+          "selectedOptionValues": [
+            {
+              "optionCode": "COLOR",
+              "optionName": "색상",
+              "optionValue": "BLACK",
+              "optionValueName": "블랙"
+            },
+            {
+              "optionCode": "TOP-CLOTH-SIZE",
+              "optionName": "상의 사이즈",
+              "optionValue": "M",
+              "optionValueName": "M - 95"
+            }
+          ]
+        },
+        {
+          "selectedOptionValues": [
+            {
+              "optionCode": "COLOR",
+              "optionName": "색상",
+              "optionValue": "BLACK",
+              "optionValueName": "블랙"
+            },
+            {
+              "optionCode": "TOP-CLOTH-SIZE",
+              "optionName": "상의 사이즈",
+              "optionValue": "L",
+              "optionValueName": "L - 100"
+            }
+          ]
+        }
+      ],
+      "purchasePrice": 100,
+      "sellingPrice": 200,
+      "description": "아디다스 티셔츠 입니다."
+    }
+  ]
+}
