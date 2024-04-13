@@ -17,42 +17,54 @@ public class ProductOption extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_group_id")
-    private ProductOptionGroup productOptionGroup;
+    private ProductOptionCombination productOptionCombination;
 
-    private String productOptionCode;
+    private String optionCode;
 
-    private String productOptionName;
+    private String optionName;
+
+    private String optionValue;
+
+    private String optionValueName;
 
     @Builder(access = AccessLevel.PRIVATE)
     private ProductOption(
-            ProductOptionGroup productOptionGroup,
-            String productOptionCode,
-            String productOptionName
+            ProductOptionCombination productOptionCombination,
+            String optionCode,
+            String optionName,
+            String optionValue,
+            String optionValueName
     ) {
-        this.productOptionGroup = productOptionGroup;
-        this.productOptionCode = productOptionCode;
-        this.productOptionName = productOptionName;
+        this.productOptionCombination = productOptionCombination;
+        this.optionCode = optionCode;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
+        this.optionValueName = optionValueName;
     }
 
     public static ProductOption of(
-            ProductOptionGroup productOptionGroup,
-            String productOptionCode,
-            String productOptionName
+            ProductOptionCombination productOptionCombination,
+            String optionCode,
+            String optionName,
+            String optionValue,
+            String optionValueName
     ) {
         ProductOption productOption = ProductOption
                 .builder()
-                .productOptionCode(productOptionCode)
-                .productOptionName(productOptionName)
+                .optionCode(optionCode)
+                .optionName(optionName)
+                .optionValue(optionValue)
+                .optionValueName(optionValueName)
                 .build();
 
         // 연관관계 설정
-        productOption.changeProductOptionGroup(productOptionGroup);
+        productOption.changeProductOptionGroup(productOptionCombination);
 
         return productOption;
     }
 
     // 연관관계 편의 메소드
-    public void changeProductOptionGroup(ProductOptionGroup productOptionGroup) {
-        this.productOptionGroup = productOptionGroup;
+    public void changeProductOptionGroup(ProductOptionCombination productOptionCombination) {
+        this.productOptionCombination = productOptionCombination;
     }
 }
