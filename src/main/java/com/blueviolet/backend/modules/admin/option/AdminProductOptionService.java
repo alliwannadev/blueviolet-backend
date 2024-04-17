@@ -40,13 +40,19 @@ public class AdminProductOptionService {
                                         .stream()
                                         .map(CreateProductParam.SelectedOptionValue::optionName)
                                         .collect(Collectors.joining("-"));
+                        String filteringOption =
+                                selectedOption.selectedOptionValues()
+                                        .stream()
+                                        .map(optionValue -> optionValue.optionCode() + "-" + optionValue.optionValue())
+                                        .collect(Collectors.joining(","));
                         String productOptionCombinationCode = productCode + "-" + optionCombinationCode;
                         String productOptionCombinationName = productName + "-" + optionCombinationName;
                         ProductOptionCombination savedProductOptionCombination =
                                 createProductOptionCombination(
                                         productCode,
                                         productOptionCombinationCode,
-                                        productOptionCombinationName
+                                        productOptionCombinationName,
+                                        filteringOption
                                 );
 
                         selectedOption
@@ -87,14 +93,16 @@ public class AdminProductOptionService {
     public ProductOptionCombination createProductOptionCombination(
             String productCode,
             String productOptionCombinationCode,
-            String productOptionCombinationName
+            String productOptionCombinationName,
+            String filteringOption
     ) {
         return productOptionCombinationRepository.save(
                 ProductOptionCombination.of(
                         adminProductQueryService.getOneByProductCode(productCode),
                         productOptionCombinationCode,
                         getUniqueCombinationCode(productOptionCombinationCode),
-                        productOptionCombinationName
+                        productOptionCombinationName,
+                        filteringOption
                 )
         );
     }

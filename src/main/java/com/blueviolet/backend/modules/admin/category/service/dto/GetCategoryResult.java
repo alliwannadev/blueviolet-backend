@@ -7,7 +7,8 @@ public record GetCategoryResult(
         Long categoryId,
         Long parentCategoryId,
         String name,
-        Integer level
+        Integer level,
+        String pathName
 ) {
 
     public static GetCategoryResult fromEntity(Category category) {
@@ -15,7 +16,8 @@ public record GetCategoryResult(
                 category.getCategoryId(),
                 ObjectUtils.isEmpty(category.getParentCategory()) ? null : category.getParentCategory().getCategoryId(),
                 category.getName(),
-                category.getLevel()
+                category.getLevel(),
+                category.getPathName()
         );
     }
 }

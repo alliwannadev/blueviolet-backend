@@ -5,6 +5,7 @@ import com.blueviolet.backend.modules.admin.category.service.dto.CreateCategoryP
 import com.blueviolet.backend.modules.admin.category.service.dto.GetCategoryResult;
 import com.blueviolet.backend.modules.category.domain.Category;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +28,20 @@ public class AdminCategoryService {
                         .toList();
 
         for (CreateCategoryParam.CategoryDto categoryDto : sortedCategories) {
+            Category parentCategory = mappingTable.getOrDefault(categoryDto.parentCategoryKey(), null);
             Category category = mappingTable.getOrDefault(
                     categoryDto.categoryKey(),
                     Category.of(
                             categoryDto.name(),
-                            categoryDto.level()
+                            categoryDto.level(),
+                            ObjectUtils.isEmpty(parentCategory) ?
+                            categoryDto.name() :
+                            parentCategory.getPathName() + ">" + categoryDto.name()
                     )
             );
 
             category.changeParentCategory(
-                    mappingTable.getOrDefault(categoryDto.parentCategoryKey(), null)
+                    parentCategory
             );
             mappingTable.put(categoryDto.categoryKey(), category);
         }
