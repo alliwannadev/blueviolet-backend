@@ -20,7 +20,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductQueryRepository productQueryRepository;
 
-    public Page<SearchProductResult> getProductListByCond(
+    public Page<SearchProductResult> searchAllByCond(
             SearchProductListCond condition,
             Pageable pageable
     ) {

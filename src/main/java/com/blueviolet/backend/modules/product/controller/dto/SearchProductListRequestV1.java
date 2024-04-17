@@ -1,12 +1,13 @@
 package com.blueviolet.backend.modules.product.controller.dto;
 
 import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
+import jakarta.validation.constraints.Positive;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.List;
 
 public record SearchProductListRequestV1(
-        Long categoryId,
+        @Positive Long categoryId,
         List<String> colors,
         List<String> sizes,
         String priceRange,

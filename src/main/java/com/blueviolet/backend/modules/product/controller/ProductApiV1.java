@@ -7,6 +7,7 @@ import com.blueviolet.backend.modules.product.controller.dto.SearchProductListRe
 import com.blueviolet.backend.modules.product.controller.dto.SearchProductResponseV1;
 import com.blueviolet.backend.modules.product.service.ProductService;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,11 +24,11 @@ public class ProductApiV1 {
     private final ProductService productService;
 
     @GetMapping(ProductApiPathsV1.V1_PRODUCTS)
-    public OkResponse<CustomPageResponseV1<SearchProductResponseV1>> getProductList(
-            SearchProductListRequestV1 searchProductListRequestV1,
+    public OkResponse<CustomPageResponseV1<SearchProductResponseV1>> searchAllByCond(
+            @Valid SearchProductListRequestV1 searchProductListRequestV1,
             CustomPageRequestV1 customPageRequestV1
     ) {
-        Page<SearchProductResult> searchProductResultPage = productService.getProductListByCond(
+        Page<SearchProductResult> searchProductResultPage = productService.searchAllByCond(
                 searchProductListRequestV1.toDto(),
                 customPageRequestV1.getPageable()
         );
