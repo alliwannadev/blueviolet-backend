@@ -16,7 +16,7 @@ public class ProductOption extends BaseTimeEntity {
     private Long productOptionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_option_group_id")
+    @JoinColumn(name = "product_option_combination_id")
     private ProductOptionCombination productOptionCombination;
 
     private String optionCode;

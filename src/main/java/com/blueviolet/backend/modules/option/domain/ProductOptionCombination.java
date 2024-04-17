@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ProductOptionCombination extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productOptionGroupId;
+    private Long productOptionCombinationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -26,30 +26,36 @@ public class ProductOptionCombination extends BaseTimeEntity {
 
     private String combinationName;
 
+    private String filteringOption;
+
     @Builder(access = AccessLevel.PRIVATE)
     private ProductOptionCombination(
             Product product,
             String combinationCode,
             String uniqueCombinationCode,
-            String combinationName
+            String combinationName,
+            String filteringOption
     ) {
         this.product = product;
         this.combinationCode = combinationCode;
         this.uniqueCombinationCode = uniqueCombinationCode;
         this.combinationName = combinationName;
+        this.filteringOption = filteringOption;
     }
 
     public static ProductOptionCombination of(
             Product product,
             String combinationCode,
             String uniqueCombinationCode,
-            String combinationName
+            String combinationName,
+            String filteringOption
     ) {
         ProductOptionCombination productOptionCombination = ProductOptionCombination
                 .builder()
                 .combinationCode(combinationCode)
                 .uniqueCombinationCode(uniqueCombinationCode)
                 .combinationName(combinationName)
+                .filteringOption(filteringOption)
                 .build();
 
         // 연관관계 설정
