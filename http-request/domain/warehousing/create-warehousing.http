@@ -1,0 +1,21 @@
+### 1. 입고 처리 (Case 1)
+POST http://localhost:8080/api/admin/v1/warehousing
+Content-Type: application/json
+
+{
+  "productOptionCombinationId": 1,
+  "productOptionCombinationName": "아디다스 티셔츠 (색상: 블랙, 사이즈: M)",
+  "warehousingDate": "20240417",
+  "quantity": 3
+}
+
+### 2. 입고 처리 (Case 2)
+POST http://localhost:8080/api/admin/v1/warehousing
+Content-Type: application/json
+
+{
+  "productOptionCombinationId": 3,
+  "productOptionCombinationName": "아디다스 티셔츠 (색상: 화이트, 사이즈: M)",
+  "warehousingDate": "20240417",
+  "quantity": 5
+}
