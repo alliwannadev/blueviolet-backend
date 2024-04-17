@@ -13,6 +13,7 @@ public enum ErrorCode {
     DATA_NOT_FOUND(404, "COMMON-003", "요청하신 데이터를 찾을 수 없습니다."),
     DATA_ACCESS_ERROR(500, "COMMON-004", "요청하신 데이터에 접근하는 과정에서 에러가 발생했습니다."),
     INTERNAL_SERVER_ERROR(500, "COMMON-005", "서버에 에러가 발생했습니다."),
+    DATE_TIME_PARSING_ERROR(400, "COMMON-006", "날짜 및 시간을 파싱하는 과정에서 에러가 발생했습니다."),
 
     // User
     EMAIL_DUPLICATION(400, "USER-001", "중복된 이메일입니다."),
@@ -30,7 +31,10 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(404, "CATEGORY-001", "요청하신 카테고리 정보를 찾을 수 없습니다."),
 
     // Product
-    PRODUCT_NOT_FOUND(404, "PRODUCT-001", "요청하신 상품 정보를 찾을 수 없습니다.")
+    PRODUCT_NOT_FOUND(404, "PRODUCT-001", "요청하신 상품 정보를 찾을 수 없습니다."),
+
+    // Stock
+    STOCK_NOT_FOUND(404, "STOCK-001", "요청하신 재고 정보를 찾을 수 없습니다.")
     ;
 
     private final int status;
