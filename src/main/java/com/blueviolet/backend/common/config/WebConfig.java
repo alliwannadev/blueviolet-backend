@@ -31,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
                 List.of(
                         "/h2-console/**",
                         "/api/v1/sign-up", "/api/v1/sign-in", "/api/v1/token-regeneration",
+                        "/api/v1/products/**",
                         "/api/admin/v1/**" // TODO: Admin API는 현재 인증 체크를 하지 않으며 나중에 Admin 권한 체크 기능을 추가할 예정
                 );
 

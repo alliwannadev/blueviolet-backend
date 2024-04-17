@@ -6,7 +6,8 @@ public record GetCategoryResponseV1(
         Long categoryId,
         Long parentCategoryId,
         String name,
-        Integer level
+        Integer level,
+        String pathName
 ) {
 
     public static GetCategoryResponseV1 fromDto(GetCategoryResult categoryResult) {
@@ -14,7 +15,8 @@ public record GetCategoryResponseV1(
                 categoryResult.categoryId(),
                 categoryResult.parentCategoryId(),
                 categoryResult.name(),
-                categoryResult.level()
+                categoryResult.level(),
+                categoryResult.pathName()
         );
     }
 }
