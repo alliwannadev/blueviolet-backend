@@ -1,0 +1,2 @@
+### 상품 1건 조회
+GET http://localhost:8080/api/v1/products/1
