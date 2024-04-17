@@ -1,0 +1,5 @@
+### 1. 상품 리스트 조회 (기본 옵션 포함)
+GET http://localhost:8080/api/v1/products?categoryId=1
+
+### 2. 상품 리스트 조회 (모든 옵션 포함)
+GET http://localhost:8080/api/v1/products?categoryId=1&colors=BLACK,WHITE&sizes=M,L&priceRange=100~50000&sortStandard=PRICE_HIGH&isInStock=true
