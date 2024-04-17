@@ -7,6 +7,7 @@ import com.blueviolet.backend.modules.product.controller.dto.SearchProductListRe
 import com.blueviolet.backend.modules.product.controller.dto.SearchProductResponseV1;
 import com.blueviolet.backend.modules.product.service.ProductService;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -38,11 +39,11 @@ public class ProductApiV1 {
         return OkResponse.of(pageResponse);
     }
 
-    // TODO: 상품 1건 조회
     @GetMapping(ProductApiPathsV1.V1_PRODUCTS_BY_PRODUCT_ID)
-    public OkResponse<Void> getProduct(
-            @PathVariable Long productId
+    public OkResponse<SearchProductResponseV1> searchOneByProductId(
+            @PathVariable @Positive Long productId
     ) {
-        return OkResponse.empty();
+        SearchProductResult result = productService.searchOneByProductId(productId);
+        return OkResponse.of(result.toResponse());
     }
 }

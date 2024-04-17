@@ -1,6 +1,7 @@
 package com.blueviolet.backend.modules.product.service.dto;
 
 import com.blueviolet.backend.modules.product.controller.dto.SearchProductResponseV1;
+import com.blueviolet.backend.modules.product.domain.Product;
 
 public record SearchProductResult(
         Long productId,
@@ -25,6 +26,20 @@ public record SearchProductResult(
                 sellingPrice,
                 description,
                 isDisplayed
+        );
+    }
+
+    public static SearchProductResult fromEntity(Product product) {
+        return new SearchProductResult(
+                product.getProductId(),
+                product.getProductGroup().getProductGroupId(),
+                product.getProductCode(),
+                product.getProductName(),
+                product.getModelName(),
+                product.getPurchasePrice(),
+                product.getSellingPrice(),
+                product.getDescription(),
+                product.getIsDisplayed()
         );
     }
 }
