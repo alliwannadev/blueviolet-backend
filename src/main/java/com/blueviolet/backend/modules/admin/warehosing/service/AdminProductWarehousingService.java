@@ -2,7 +2,7 @@ package com.blueviolet.backend.modules.admin.warehosing.service;
 
 import com.blueviolet.backend.common.util.DateTimeUtil;
 import com.blueviolet.backend.modules.stock.domain.Stock;
-import com.blueviolet.backend.modules.admin.stock.service.AdminStockService;
+import com.blueviolet.backend.modules.stock.service.StockService;
 import com.blueviolet.backend.modules.warehousing.domain.ProductWarehousing;
 import com.blueviolet.backend.modules.warehousing.repository.ProductWarehousingRepository;
 import com.blueviolet.backend.modules.admin.warehosing.service.dto.CreateWarehousingParam;
@@ -18,16 +18,16 @@ public class AdminProductWarehousingService {
 
     private final ProductWarehousingRepository productWarehousingRepository;
 
-    private final AdminStockService adminStockService;
+    private final StockService stockService;
 
     @Transactional
     public void create(
             CreateWarehousingParam parameter
     ) {
-        Optional<Stock> findStock = adminStockService.getOneByCombinationId(parameter.productOptionCombinationId());
+        Optional<Stock> findStock = stockService.getOneByCombinationId(parameter.productOptionCombinationId());
         Stock foundStock =
                 findStock.orElseGet(
-                        () -> adminStockService.create(
+                        () -> stockService.create(
                                 parameter.productOptionCombinationId(),
                                 parameter.productOptionCombinationName()
                         )
@@ -42,7 +42,7 @@ public class AdminProductWarehousingService {
                 )
         );
 
-        adminStockService.processWarehousing(
+        stockService.increaseQuantityByStockId(
                 foundStock.getStockId(),
                 parameter.quantity()
         );
