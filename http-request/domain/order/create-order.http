@@ -1,0 +1,43 @@
+### 1. 로그인 API 호출
+POST {{host}}/api/v1/sign-in
+Content-Type: application/json
+
+{
+  "email": "tester@test.com",
+  "password": "123456"
+}
+
+> {% client.global.set("accessToken", response.body.data.accessToken); %}
+
+### 2. 주문 등록
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "receiverName": "테스터",
+  "receiverPhoneNumber": "01011112222",
+  "receiverAddr": "서울특별시 강남구 역삼동 000-00",
+  "receiverPostalCode": "11111",
+  "totalAmount": 600,
+  "discountedTotalAmount": 600,
+  "totalQuantity": 3,
+  "orderItemList": [
+    {
+      "productOptionCombinationId": 1,
+      "price": 200,
+      "discountedPrice": 200,
+      "quantity": 1,
+      "subTotalAmount": 200,
+      "discountedSubTotalAmount": 200
+    },
+    {
+      "productOptionCombinationId": 3,
+      "price": 200,
+      "discountedPrice": 200,
+      "quantity": 2,
+      "subTotalAmount": 400,
+      "discountedSubTotalAmount": 400
+    }
+  ]
+}
