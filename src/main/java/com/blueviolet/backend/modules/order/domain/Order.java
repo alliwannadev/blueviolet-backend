@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Table(name = "ORDERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Order extends BaseTimeEntity {
@@ -32,9 +33,9 @@ public class Order extends BaseTimeEntity {
 
     private String receiverPostalCode;
 
-    private Long totalPrice;
+    private Long totalAmount;
 
-    private Long totalDiscountedPrice;
+    private Long discountedTotalAmount;
 
     private Long totalQuantity;
 
@@ -47,8 +48,8 @@ public class Order extends BaseTimeEntity {
             String receiverPhoneNumber,
             String receiverAddr,
             String receiverPostalCode,
-            Long totalPrice,
-            Long totalDiscountedPrice,
+            Long totalAmount,
+            Long discountedTotalAmount,
             Long totalQuantity
     ) {
         this.userId = userId;
@@ -58,8 +59,8 @@ public class Order extends BaseTimeEntity {
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.receiverAddr = receiverAddr;
         this.receiverPostalCode = receiverPostalCode;
-        this.totalPrice = totalPrice;
-        this.totalDiscountedPrice = totalDiscountedPrice;
+        this.totalAmount = totalAmount;
+        this.discountedTotalAmount = discountedTotalAmount;
         this.totalQuantity = totalQuantity;
     }
 
@@ -71,8 +72,8 @@ public class Order extends BaseTimeEntity {
             String receiverPhoneNumber,
             String receiverAddr,
             String receiverPostalCode,
-            Long totalPrice,
-            Long totalDiscountedPrice,
+            Long totalAmount,
+            Long discountedTotalAmount,
             Long totalQuantity
     ) {
         return Order
@@ -84,8 +85,8 @@ public class Order extends BaseTimeEntity {
                 .receiverPhoneNumber(receiverPhoneNumber)
                 .receiverAddr(receiverAddr)
                 .receiverPostalCode(receiverPostalCode)
-                .totalPrice(totalPrice)
-                .totalDiscountedPrice(totalDiscountedPrice)
+                .totalAmount(totalAmount)
+                .discountedTotalAmount(discountedTotalAmount)
                 .totalQuantity(totalQuantity)
                 .build();
     }

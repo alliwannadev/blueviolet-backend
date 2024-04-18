@@ -27,32 +27,46 @@ public class OrderItem extends BaseTimeEntity {
 
     private Long quantity;
 
+    private Long subTotalAmount;
+
+    private Long discountedSubTotalAmount;
+
     @Builder(access = AccessLevel.PRIVATE)
     private OrderItem(
             Order order,
             Long productOptionCombinationId,
             Long price,
             Long discountedPrice,
-            Long quantity
+            Long quantity,
+            Long subTotalAmount,
+            Long discountedSubTotalAmount
     ) {
         this.order = order;
         this.productOptionCombinationId = productOptionCombinationId;
         this.price = price;
         this.discountedPrice = discountedPrice;
         this.quantity = quantity;
+        this.subTotalAmount = subTotalAmount;
+        this.discountedSubTotalAmount = discountedSubTotalAmount;
     }
 
     public static OrderItem of(
             Order order,
             Long productOptionCombinationId,
             Long price,
-            Long discountedPrice
+            Long discountedPrice,
+            Long quantity,
+            Long subTotalAmount,
+            Long discountedSubTotalAmount
     ) {
         OrderItem orderItem = OrderItem
                 .builder()
                 .productOptionCombinationId(productOptionCombinationId)
                 .price(price)
                 .discountedPrice(discountedPrice)
+                .quantity(quantity)
+                .subTotalAmount(subTotalAmount)
+                .discountedSubTotalAmount(discountedSubTotalAmount)
                 .build();
 
         // 연관관계 설정
