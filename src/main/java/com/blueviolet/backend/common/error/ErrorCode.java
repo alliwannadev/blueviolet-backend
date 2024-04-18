@@ -34,7 +34,8 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(404, "PRODUCT-001", "요청하신 상품 정보를 찾을 수 없습니다."),
 
     // Stock
-    STOCK_NOT_FOUND(404, "STOCK-001", "요청하신 재고 정보를 찾을 수 없습니다.")
+    STOCK_NOT_FOUND(404, "STOCK-001", "요청하신 재고 정보를 찾을 수 없습니다."),
+    OUT_OF_STOCK(400, "STOCK-002", "해당 상품의 재고가 부족합니다.")
     ;
 
     private final int status;
