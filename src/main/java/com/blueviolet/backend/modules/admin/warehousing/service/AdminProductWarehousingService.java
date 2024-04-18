@@ -1,11 +1,11 @@
-package com.blueviolet.backend.modules.admin.warehosing.service;
+package com.blueviolet.backend.modules.admin.warehousing.service;
 
 import com.blueviolet.backend.common.util.DateTimeUtil;
 import com.blueviolet.backend.modules.stock.domain.Stock;
 import com.blueviolet.backend.modules.stock.service.StockService;
 import com.blueviolet.backend.modules.warehousing.domain.ProductWarehousing;
 import com.blueviolet.backend.modules.warehousing.repository.ProductWarehousingRepository;
-import com.blueviolet.backend.modules.admin.warehosing.service.dto.CreateWarehousingParam;
+import com.blueviolet.backend.modules.admin.warehousing.service.dto.CreateWarehousingParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

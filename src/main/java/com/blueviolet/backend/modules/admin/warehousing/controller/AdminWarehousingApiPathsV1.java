@@ -1,4 +1,4 @@
-package com.blueviolet.backend.modules.admin.warehosing.controller;
+package com.blueviolet.backend.modules.admin.warehousing.controller;
 
 public final class AdminWarehousingApiPathsV1 {
 

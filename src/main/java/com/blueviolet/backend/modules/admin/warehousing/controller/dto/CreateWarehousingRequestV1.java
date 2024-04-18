@@ -1,6 +1,6 @@
-package com.blueviolet.backend.modules.admin.warehosing.controller.dto;
+package com.blueviolet.backend.modules.admin.warehousing.controller.dto;
 
-import com.blueviolet.backend.modules.admin.warehosing.service.dto.CreateWarehousingParam;
+import com.blueviolet.backend.modules.admin.warehousing.service.dto.CreateWarehousingParam;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
