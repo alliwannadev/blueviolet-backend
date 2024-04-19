@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class ProductOptionDbHelper {
+public class ProductOptionTestHelper {
 
     private final AdminProductOptionService adminProductOptionService;
 

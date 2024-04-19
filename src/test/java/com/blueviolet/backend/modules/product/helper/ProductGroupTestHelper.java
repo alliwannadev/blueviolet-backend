@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class ProductGroupDbHelper {
+public class ProductGroupTestHelper {
 
     private final CategoryRepository categoryRepository;
     private final ProductGroupRepository productGroupRepository;

@@ -7,10 +7,10 @@ import com.blueviolet.backend.common.dto.OkResponse;
 import com.blueviolet.backend.common.error.ErrorCode;
 import com.blueviolet.backend.common.util.JsonUtil;
 import com.blueviolet.backend.modules.category.domain.Category;
-import com.blueviolet.backend.modules.category.helper.CategoryDbHelper;
+import com.blueviolet.backend.modules.category.helper.CategoryTestHelper;
 import com.blueviolet.backend.modules.product.controller.dto.SearchProductResponseV1;
 import com.blueviolet.backend.modules.product.domain.Product;
-import com.blueviolet.backend.modules.product.helper.ProductDbHelper;
+import com.blueviolet.backend.modules.product.helper.ProductTestHelper;
 import com.blueviolet.backend.modules.product.service.ProductService;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
@@ -37,21 +37,23 @@ class ProductApiV1Test {
 
     @Autowired MockMvc mockMvc;
     @Autowired JsonUtil jsonUtil;
-    @Autowired CategoryDbHelper categoryDbHelper;
-    @Autowired ProductDbHelper productDbHelper;
+    @Autowired
+    CategoryTestHelper categoryTestHelper;
+    @Autowired
+    ProductTestHelper productTestHelper;
 
     @Autowired ProductService productService;
 
     @BeforeEach
     void beforeEach() {
-        productDbHelper.createProductWithDefaultValue();
+        productTestHelper.createProductWithDefaultValue();
     }
 
     @DisplayName("[API][GET][SUCCESS] 상품 목록 조회 API 호출")
     @Test
     void givenProductSearchParameters_whenSearchProductList_thenReturnSuccessfulResult() throws Exception {
         // Given
-        Category foundCategory = categoryDbHelper.findOneByPathName("남성>상의>반소매 티셔츠");
+        Category foundCategory = categoryTestHelper.findOneByPathName("남성>상의>반소매 티셔츠");
 
         // When & Then
         String jsonResponse = mockMvc.perform(
@@ -129,7 +131,7 @@ class ProductApiV1Test {
     @Test
     void givenProductId_whenSearchProduct_thenReturnSuccessfulResult() throws Exception {
         // Given
-        Product product = productDbHelper.getFirstProductId();
+        Product product = productTestHelper.getFirstProductId();
         Long productId = product.getProductId();
 
         // When & Then

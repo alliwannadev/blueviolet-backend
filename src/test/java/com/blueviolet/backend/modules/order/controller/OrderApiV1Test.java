@@ -9,13 +9,13 @@ import com.blueviolet.backend.modules.admin.warehousing.service.dto.CreateWareho
 import com.blueviolet.backend.modules.auth.controller.dto.request.SignInRequestV1;
 import com.blueviolet.backend.modules.auth.controller.dto.request.SignUpRequestV1;
 import com.blueviolet.backend.modules.auth.helper.AuthDbHelper;
-import com.blueviolet.backend.modules.category.helper.CategoryDbHelper;
+import com.blueviolet.backend.modules.category.helper.CategoryTestHelper;
 import com.blueviolet.backend.modules.option.domain.ProductOptionCombination;
-import com.blueviolet.backend.modules.option.helper.ProductOptionCombinationDbHelper;
+import com.blueviolet.backend.modules.option.helper.ProductOptionCombinationTestHelper;
 import com.blueviolet.backend.modules.order.controller.dto.CreateOrderRequestV1;
 import com.blueviolet.backend.modules.product.domain.Product;
-import com.blueviolet.backend.modules.product.helper.ProductDbHelper;
-import com.blueviolet.backend.modules.warehousing.helper.ProductWarehousingDbHelper;
+import com.blueviolet.backend.modules.product.helper.ProductTestHelper;
+import com.blueviolet.backend.modules.warehousing.helper.ProductWarehousingTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,10 +39,14 @@ class OrderApiV1Test {
     @Autowired JsonUtil jsonUtil;
 
     @Autowired AuthDbHelper authDbHelper;
-    @Autowired CategoryDbHelper categoryDbHelper;
-    @Autowired ProductDbHelper productDbHelper;
-    @Autowired ProductOptionCombinationDbHelper productOptionCombinationDbHelper;
-    @Autowired ProductWarehousingDbHelper productWarehousingDbHelper;
+    @Autowired
+    CategoryTestHelper categoryTestHelper;
+    @Autowired
+    ProductTestHelper productTestHelper;
+    @Autowired
+    ProductOptionCombinationTestHelper productOptionCombinationTestHelper;
+    @Autowired
+    ProductWarehousingTestHelper productWarehousingTestHelper;
 
     @BeforeEach
     void beforeEach() {
@@ -54,9 +58,9 @@ class OrderApiV1Test {
                         "01011112222"
                 )
         );
-        productDbHelper.createProductWithDefaultValue();
-        ProductOptionCombination foundCombination = productOptionCombinationDbHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
-        productWarehousingDbHelper.createWarehousing(
+        productTestHelper.createProductWithDefaultValue();
+        ProductOptionCombination foundCombination = productOptionCombinationTestHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
+        productWarehousingTestHelper.createWarehousing(
                 new CreateWarehousingParam(
                         foundCombination.getProductOptionCombinationId(),
                         foundCombination.getCombinationName(),
@@ -71,8 +75,8 @@ class OrderApiV1Test {
     void givenOrderParameters_whenCreateOrder_thenReturnSuccessfulResponse() throws Exception {
         // Given
         TokenInfo tokenInfo = authDbHelper.signIn(new SignInRequestV1("tester@test.com", "123456"));
-        ProductOptionCombination productOptionCombination = productOptionCombinationDbHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
-        Product product = productDbHelper.getOneByProductId(productOptionCombination.getProduct().getProductId());
+        ProductOptionCombination productOptionCombination = productOptionCombinationTestHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
+        Product product = productTestHelper.getOneByProductId(productOptionCombination.getProduct().getProductId());
 
         CreateOrderRequestV1 createOrderRequestV1 =
                 new CreateOrderRequestV1(

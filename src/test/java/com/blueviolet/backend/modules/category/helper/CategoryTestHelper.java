@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class CategoryDbHelper {
+public class CategoryTestHelper {
 
     private final CategoryRepository categoryRepository;
 

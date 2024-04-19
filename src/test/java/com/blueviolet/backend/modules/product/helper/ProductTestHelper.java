@@ -4,8 +4,8 @@ import com.blueviolet.backend.common.error.BusinessException;
 import com.blueviolet.backend.common.error.ErrorCode;
 import com.blueviolet.backend.modules.admin.product.service.dto.CreateProductParam;
 import com.blueviolet.backend.modules.category.domain.Category;
-import com.blueviolet.backend.modules.category.helper.CategoryDbHelper;
-import com.blueviolet.backend.modules.option.helper.ProductOptionDbHelper;
+import com.blueviolet.backend.modules.category.helper.CategoryTestHelper;
+import com.blueviolet.backend.modules.option.helper.ProductOptionTestHelper;
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.domain.ProductGroup;
 import com.blueviolet.backend.modules.product.repository.ProductRepository;
@@ -19,17 +19,17 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class ProductDbHelper {
+public class ProductTestHelper {
 
     private final ProductRepository productRepository;
 
-    private final CategoryDbHelper categoryDbHelper;
-    private final ProductGroupDbHelper productGroupDbHelper;
-    private final ProductOptionDbHelper productOptionDbHelper;
+    private final CategoryTestHelper categoryTestHelper;
+    private final ProductGroupTestHelper productGroupTestHelper;
+    private final ProductOptionTestHelper productOptionTestHelper;
 
     @Transactional
     public void createProduct(CreateProductParam createProductParam) {
-        ProductGroup productGroup = productGroupDbHelper.createProductGroup(
+        ProductGroup productGroup = productGroupTestHelper.createProductGroup(
                 createProductParam.categoryId(),
                 createProductParam.productGroupName()
         );
@@ -50,14 +50,14 @@ public class ProductDbHelper {
                 .toList();
         productRepository.saveAll(products);
 
-        productOptionDbHelper.createProductOptionAndCombination(
+        productOptionTestHelper.createProductOptionAndCombination(
                 createProductParam
         );
     }
 
     @Transactional
     public void createProductWithDefaultValue() {
-        Category category = categoryDbHelper.createWithDefaultValue();
+        Category category = categoryTestHelper.createWithDefaultValue();
 
         CreateProductParam.ProductDto productDto1 = new CreateProductParam.ProductDto(
                 "ADIDAS-CLOTH-001",
