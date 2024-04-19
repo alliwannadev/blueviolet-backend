@@ -37,10 +37,8 @@ class ProductApiV1Test {
 
     @Autowired MockMvc mockMvc;
     @Autowired JsonUtil jsonUtil;
-    @Autowired
-    CategoryTestHelper categoryTestHelper;
-    @Autowired
-    ProductTestHelper productTestHelper;
+    @Autowired CategoryTestHelper categoryTestHelper;
+    @Autowired ProductTestHelper productTestHelper;
 
     @Autowired ProductService productService;
 

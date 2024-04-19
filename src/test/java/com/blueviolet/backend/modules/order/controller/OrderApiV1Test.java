@@ -8,7 +8,7 @@ import com.blueviolet.backend.common.util.JsonUtil;
 import com.blueviolet.backend.modules.admin.warehousing.service.dto.CreateWarehousingParam;
 import com.blueviolet.backend.modules.auth.controller.dto.request.SignInRequestV1;
 import com.blueviolet.backend.modules.auth.controller.dto.request.SignUpRequestV1;
-import com.blueviolet.backend.modules.auth.helper.AuthDbHelper;
+import com.blueviolet.backend.modules.auth.helper.AuthTestHelper;
 import com.blueviolet.backend.modules.category.helper.CategoryTestHelper;
 import com.blueviolet.backend.modules.option.domain.ProductOptionCombination;
 import com.blueviolet.backend.modules.option.helper.ProductOptionCombinationTestHelper;
@@ -38,19 +38,15 @@ class OrderApiV1Test {
     @Autowired MockMvc mockMvc;
     @Autowired JsonUtil jsonUtil;
 
-    @Autowired AuthDbHelper authDbHelper;
-    @Autowired
-    CategoryTestHelper categoryTestHelper;
-    @Autowired
-    ProductTestHelper productTestHelper;
-    @Autowired
-    ProductOptionCombinationTestHelper productOptionCombinationTestHelper;
-    @Autowired
-    ProductWarehousingTestHelper productWarehousingTestHelper;
+    @Autowired AuthTestHelper authTestHelper;
+    @Autowired CategoryTestHelper categoryTestHelper;
+    @Autowired ProductTestHelper productTestHelper;
+    @Autowired ProductOptionCombinationTestHelper productOptionCombinationTestHelper;
+    @Autowired ProductWarehousingTestHelper productWarehousingTestHelper;
 
     @BeforeEach
     void beforeEach() {
-        authDbHelper.signUp(
+        authTestHelper.signUp(
                 new SignUpRequestV1(
                         "tester@test.com",
                         "123456",
@@ -74,7 +70,7 @@ class OrderApiV1Test {
     @Test
     void givenOrderParameters_whenCreateOrder_thenReturnSuccessfulResponse() throws Exception {
         // Given
-        TokenInfo tokenInfo = authDbHelper.signIn(new SignInRequestV1("tester@test.com", "123456"));
+        TokenInfo tokenInfo = authTestHelper.signIn(new SignInRequestV1("tester@test.com", "123456"));
         ProductOptionCombination productOptionCombination = productOptionCombinationTestHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
         Product product = productTestHelper.getOneByProductId(productOptionCombination.getProduct().getProductId());
 
@@ -123,7 +119,7 @@ class OrderApiV1Test {
     @Test
     void givenInvalidOrderParameters_whenCreateOrder_thenReturnFailedResponse() throws Exception {
         // Given
-        TokenInfo tokenInfo = authDbHelper.signIn(new SignInRequestV1("tester@test.com", "123456"));
+        TokenInfo tokenInfo = authTestHelper.signIn(new SignInRequestV1("tester@test.com", "123456"));
         CreateOrderRequestV1 createOrderRequestV1 =
                 new CreateOrderRequestV1(
                         "",

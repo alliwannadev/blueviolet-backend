@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class AuthDbHelper {
+public class AuthTestHelper {
 
     private final AuthService authService;
 
