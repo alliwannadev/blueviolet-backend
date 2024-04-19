@@ -1,6 +1,8 @@
 package com.blueviolet.backend.modules.stock.domain;
 
 import com.blueviolet.backend.common.domain.BaseTimeEntity;
+import com.blueviolet.backend.common.error.BusinessException;
+import com.blueviolet.backend.common.error.ErrorCode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,7 +50,15 @@ public class Stock extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateQuantity(Long quantity) {
-        this.quantity = quantity;
+    public void increaseQuantity(Long quantity) {
+        this.quantity += quantity;
+    }
+
+    public void decreaseQuantity(Long quantity) {
+        if (this.quantity - quantity < 0) {
+            throw new BusinessException(ErrorCode.OUT_OF_STOCK);
+        }
+
+        this.quantity -= quantity;
     }
 }

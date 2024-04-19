@@ -1,4 +1,4 @@
-package com.blueviolet.backend.modules.admin.stock.service;
+package com.blueviolet.backend.modules.stock.service;
 
 import com.blueviolet.backend.common.error.BusinessException;
 import com.blueviolet.backend.common.error.ErrorCode;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class AdminStockService {
+public class StockService {
 
     private final StockRepository stockRepository;
 
@@ -42,11 +42,20 @@ public class AdminStockService {
     }
 
     @Transactional
-    public void processWarehousing(
+    public void increaseQuantityByStockId(
             Long stockId,
             Long quantity
     ) {
         Stock foundStock = getOneById(stockId);
-        foundStock.updateQuantity(foundStock.getQuantity() + quantity);
+        foundStock.increaseQuantity(quantity);
+    }
+
+    @Transactional
+    public void decreaseQuantityByStockId(
+            Long stockId,
+            Long quantity
+    ) {
+        Stock foundStock = getOneById(stockId);
+        foundStock.decreaseQuantity(quantity);
     }
 }

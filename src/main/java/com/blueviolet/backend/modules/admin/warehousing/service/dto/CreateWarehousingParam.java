@@ -1,4 +1,4 @@
-package com.blueviolet.backend.modules.admin.warehosing.service.dto;
+package com.blueviolet.backend.modules.admin.warehousing.service.dto;
 
 public record CreateWarehousingParam(
         Long productOptionCombinationId,

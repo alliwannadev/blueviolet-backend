@@ -1,8 +1,8 @@
-package com.blueviolet.backend.modules.admin.warehosing.controller;
+package com.blueviolet.backend.modules.admin.warehousing.controller;
 
 import com.blueviolet.backend.common.dto.OkResponse;
-import com.blueviolet.backend.modules.admin.warehosing.controller.dto.CreateWarehousingRequestV1;
-import com.blueviolet.backend.modules.admin.warehosing.service.AdminProductWarehousingService;
+import com.blueviolet.backend.modules.admin.warehousing.controller.dto.CreateWarehousingRequestV1;
+import com.blueviolet.backend.modules.admin.warehousing.service.AdminProductWarehousingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
