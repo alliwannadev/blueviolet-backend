@@ -1,5 +1,7 @@
 package com.blueviolet.backend.modules.product.helper;
 
+import com.blueviolet.backend.common.error.BusinessException;
+import com.blueviolet.backend.common.error.ErrorCode;
 import com.blueviolet.backend.modules.category.domain.Category;
 import com.blueviolet.backend.modules.category.helper.CategoryDbHelper;
 import com.blueviolet.backend.modules.option.helper.ProductOptionDbHelper;
@@ -140,5 +142,12 @@ public class ProductDbHelper {
     public Product getFirstProductId() {
         Page<Product> page = productRepository.findAll(PageRequest.of(0, 1));
         return page.getContent().get(0);
+    }
+
+    @Transactional(readOnly = true)
+    public Product getOneByProductId(Long productId) {
+        return productRepository
+                .findById(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 }

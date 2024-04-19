@@ -9,6 +9,7 @@ import com.blueviolet.backend.modules.option.repository.ProductOptionRepository;
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.helper.dto.CreateTestProductParam;
 import com.blueviolet.backend.modules.product.repository.ProductRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class ProductOptionDbHelper {
     private final ProductRepository productRepository;
     private final ProductOptionCombinationRepository productOptionCombinationRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final EntityManager em;
 
     @Transactional
     public void createProductOptionAndCombination(CreateTestProductParam createTestProductParam) {
