@@ -7,6 +7,7 @@ import com.blueviolet.backend.modules.order.domain.OrderItem;
 import com.blueviolet.backend.modules.order.repository.OrderItemRepository;
 import com.blueviolet.backend.modules.order.repository.OrderRepository;
 import com.blueviolet.backend.modules.order.service.dto.CreateOrderParam;
+import com.blueviolet.backend.modules.order.service.dto.CreateOrderResult;
 import com.blueviolet.backend.modules.stock.domain.Stock;
 import com.blueviolet.backend.modules.stock.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final StockService stockService;
 
-    public void create(CreateOrderParam createOrderParam) {
+    public CreateOrderResult create(CreateOrderParam createOrderParam) {
         Order savedOrder = orderRepository.save(createOrderParam.toOrder());
         List<OrderItem> savedOrderItemList = orderItemRepository.saveAll(createOrderParam.toOrderItemList(savedOrder));
 
@@ -39,5 +40,7 @@ public class OrderService {
                             );
                         }
                 );
+
+        return CreateOrderResult.fromEntity(savedOrder, savedOrderItemList);
     }
 }
