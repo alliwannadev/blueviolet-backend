@@ -2,12 +2,12 @@ package com.blueviolet.backend.modules.product.helper;
 
 import com.blueviolet.backend.common.error.BusinessException;
 import com.blueviolet.backend.common.error.ErrorCode;
+import com.blueviolet.backend.modules.admin.product.service.dto.CreateProductParam;
 import com.blueviolet.backend.modules.category.domain.Category;
 import com.blueviolet.backend.modules.category.helper.CategoryDbHelper;
 import com.blueviolet.backend.modules.option.helper.ProductOptionDbHelper;
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.domain.ProductGroup;
-import com.blueviolet.backend.modules.product.helper.dto.CreateTestProductParam;
 import com.blueviolet.backend.modules.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,13 +28,13 @@ public class ProductDbHelper {
     private final ProductOptionDbHelper productOptionDbHelper;
 
     @Transactional
-    public void createProduct(CreateTestProductParam createTestProductParam) {
+    public void createProduct(CreateProductParam createProductParam) {
         ProductGroup productGroup = productGroupDbHelper.createProductGroup(
-                createTestProductParam.categoryId(),
-                createTestProductParam.productGroupName()
+                createProductParam.categoryId(),
+                createProductParam.productGroupName()
         );
 
-        List<Product> products = createTestProductParam
+        List<Product> products = createProductParam
                 .productList()
                 .stream()
                 .map(product -> Product.of(
@@ -51,7 +51,7 @@ public class ProductDbHelper {
         productRepository.saveAll(products);
 
         productOptionDbHelper.createProductOptionAndCombination(
-                createTestProductParam
+                createProductParam
         );
     }
 
@@ -59,20 +59,20 @@ public class ProductDbHelper {
     public void createProductWithDefaultValue() {
         Category category = categoryDbHelper.createWithDefaultValue();
 
-        CreateTestProductParam.ProductDto productDto1 = new CreateTestProductParam.ProductDto(
+        CreateProductParam.ProductDto productDto1 = new CreateProductParam.ProductDto(
                 "ADIDAS-CLOTH-001",
                 "아디다스 티셔츠 - 블랙",
                 "MODEL-NAME-001",
                 List.of(
-                        new CreateTestProductParam.SelectedOption(
+                        new CreateProductParam.SelectedOption(
                                 List.of(
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "COLOR",
                                                 "색상",
                                                 "BLACK",
                                                 "블랙"
                                         ),
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "SIZE",
                                                 "상의 사이즈",
                                                 "M",
@@ -80,15 +80,15 @@ public class ProductDbHelper {
                                         )
                                 )
                         ),
-                        new CreateTestProductParam.SelectedOption(
+                        new CreateProductParam.SelectedOption(
                                 List.of(
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "COLOR",
                                                 "색상",
                                                 "BLACK",
                                                 "블랙"
                                         ),
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "SIZE",
                                                 "상의 사이즈",
                                                 "L",
@@ -102,20 +102,20 @@ public class ProductDbHelper {
                 "아디다스 티셔츠 입니다."
         );
 
-        CreateTestProductParam.ProductDto productDto2 = new CreateTestProductParam.ProductDto(
+        CreateProductParam.ProductDto productDto2 = new CreateProductParam.ProductDto(
                 "ADIDAS-CLOTH-002",
                 "아디다스 티셔츠 - 화이트",
                 "MODEL-NAME-002",
                 List.of(
-                        new CreateTestProductParam.SelectedOption(
+                        new CreateProductParam.SelectedOption(
                                 List.of(
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "COLOR",
                                                 "색상",
                                                 "WHITE",
                                                 "화이트"
                                         ),
-                                        new CreateTestProductParam.SelectedOptionValue(
+                                        new CreateProductParam.SelectedOptionValue(
                                                 "SIZE",
                                                 "상의 사이즈",
                                                 "M",
@@ -130,7 +130,7 @@ public class ProductDbHelper {
         );
 
         createProduct(
-                new CreateTestProductParam(
+                new CreateProductParam(
                         category.getCategoryId(),
                         "아디다스 티셔츠",
                         List.of(productDto1, productDto2)
