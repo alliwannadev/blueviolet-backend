@@ -40,6 +40,7 @@ public enum OrderStatus {
     DELIVERY_START("DLY_START", "배송 시작"),
     DELIVERY_COMPLETED("DLY_CPD", "배송 완료"),
     PURCHASE_CONFIRMED("PCE_CFD", "구매 확정"),
+    ORDER_CANCELLED("ORDER_CAD", "주문 취소"),
 
     // 교환
     EXCHANGE_REQUEST(
