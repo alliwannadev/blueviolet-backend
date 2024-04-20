@@ -20,18 +20,22 @@ import com.blueviolet.backend.modules.order.domain.OrderItem;
 import com.blueviolet.backend.modules.order.helper.OrderTestHelper;
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.helper.ProductTestHelper;
+import com.blueviolet.backend.modules.stock.helper.StockTestHelper;
 import com.blueviolet.backend.modules.warehousing.helper.ProductWarehousingTestHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -52,6 +56,9 @@ class OrderApiV1Test {
     @Autowired ProductOptionCombinationTestHelper productOptionCombinationTestHelper;
     @Autowired ProductWarehousingTestHelper productWarehousingTestHelper;
     @Autowired OrderTestHelper orderTestHelper;
+    @Autowired StockTestHelper stockTestHelper;
+    @Autowired
+    private DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
     @BeforeEach
     void beforeEach() {
@@ -83,6 +90,28 @@ class OrderApiV1Test {
         ProductOptionCombination productOptionCombination = productOptionCombinationTestHelper.getOneByCombinationCode("ADIDAS-CLOTH-001-BLACK-M");
         Product product = productTestHelper.getOneByProductId(productOptionCombination.getProduct().getProductId());
 
+        List<CreateOrderRequestV1.OrderItem> requestOrderItemList = List.of(
+                new CreateOrderRequestV1.OrderItem(
+                        productOptionCombination.getProductOptionCombinationId(),
+                        product.getSellingPrice(),
+                        product.getSellingPrice(),
+                        2L,
+                        product.getSellingPrice() * 2L,
+                        product.getSellingPrice() * 2L
+                )
+        );
+
+        Map<Long, Map<String, Long>> stockQuantityMapBeforeOrder = new HashMap<>();
+        for (CreateOrderRequestV1.OrderItem orderItem : requestOrderItemList) {
+            stockQuantityMapBeforeOrder.putIfAbsent(
+                    orderItem.productOptionCombinationId(),
+                    new HashMap<>()
+            );
+            Map<String, Long> innerMap = stockQuantityMapBeforeOrder.get(orderItem.productOptionCombinationId());
+            innerMap.put("orderQuantity", orderItem.quantity());
+            innerMap.put("stockQuantity", stockTestHelper.getOneByCombinationId(orderItem.productOptionCombinationId()).getQuantity());
+        }
+
         CreateOrderRequestV1 createOrderRequestV1 =
                 new CreateOrderRequestV1(
                         "테스터",
@@ -92,16 +121,7 @@ class OrderApiV1Test {
                         400L,
                         400L,
                         2L,
-                        List.of(
-                               new CreateOrderRequestV1.OrderItem(
-                                       productOptionCombination.getProductOptionCombinationId(),
-                                       product.getSellingPrice(),
-                                       product.getSellingPrice(),
-                                       2L,
-                                       product.getSellingPrice() * 2L,
-                                       product.getSellingPrice() * 2L
-                               )
-                        )
+                        requestOrderItemList
                 );
         String requestBody = jsonUtil.toJson(createOrderRequestV1);
 
@@ -131,9 +151,7 @@ class OrderApiV1Test {
                         jsonResponse,
                         new TypeReference<>() {}
                 );
-        Order order = orderTestHelper.getOneByOrderIdWithRelationship(
-                createOrderResponse.getData().orderId()
-        );
+        Order order = orderTestHelper.getOneByOrderIdWithRelationship(createOrderResponse.getData().orderId());
         assertThat(order.getOrderId()).isEqualTo(createOrderResponse.getData().orderId());
         assertThat(order.getUserId()).isEqualTo(createOrderResponse.getData().userId());
         assertThat(order.getOrderNo()).isEqualTo(createOrderResponse.getData().orderNo());
@@ -160,6 +178,14 @@ class OrderApiV1Test {
             assertThat(orderItemDto.quantity()).isEqualTo(orderItem.getQuantity());
             assertThat(orderItemDto.subTotalAmount()).isEqualTo(orderItem.getSubTotalAmount());
             assertThat(orderItemDto.discountedSubTotalAmount()).isEqualTo(orderItem.getDiscountedSubTotalAmount());
+        }
+
+        for (long productOptionCombinationId : stockQuantityMapBeforeOrder.keySet()) {
+            Map<String, Long> innerMap = stockQuantityMapBeforeOrder.get(productOptionCombinationId);
+            Long stockQuantityBeforeOrder = innerMap.get("stockQuantity");
+            Long orderQuantity = innerMap.get("orderQuantity");
+            Long stockQuantityAfterOrder = stockTestHelper.getOneByCombinationId(productOptionCombinationId).getQuantity();
+            assertThat(stockQuantityAfterOrder).isEqualTo(stockQuantityBeforeOrder - orderQuantity);
         }
     }
 

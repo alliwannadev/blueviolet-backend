@@ -3,11 +3,11 @@ package com.blueviolet.backend.modules.option.helper;
 import com.blueviolet.backend.modules.option.domain.ProductOptionCombination;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class ProductOptionCombinationTestHelper {
 
     private final EntityManager em;

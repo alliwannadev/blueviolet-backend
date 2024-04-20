@@ -5,11 +5,11 @@ import com.blueviolet.backend.common.error.ErrorCode;
 import com.blueviolet.backend.modules.order.domain.Order;
 import com.blueviolet.backend.modules.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class OrderTestHelper {
 
     private final OrderRepository orderRepository;
