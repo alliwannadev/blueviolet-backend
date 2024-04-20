@@ -35,7 +35,11 @@ public enum ErrorCode {
 
     // Stock
     STOCK_NOT_FOUND(404, "STOCK-001", "요청하신 재고 정보를 찾을 수 없습니다."),
-    OUT_OF_STOCK(400, "STOCK-002", "해당 상품의 재고가 부족합니다.")
+    OUT_OF_STOCK(400, "STOCK-002", "해당 상품의 재고가 부족합니다."),
+
+    // Order
+    ORDER_NOT_FOUND(404, "ORDER-001", "요청하신 주문 정보를 찾을 수 없습니다."),
+    ORDER_ITEM_NOT_FOUND(404, "ORDER-002", "요청하신 주문 상품 정보를 찾을 수 없습니다.")
     ;
 
     private final int status;
