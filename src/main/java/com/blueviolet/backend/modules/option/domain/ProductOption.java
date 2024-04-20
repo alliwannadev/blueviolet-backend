@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ProductOption extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productOptionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
