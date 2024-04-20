@@ -1,0 +1,15 @@
+<included>
+    <property resource="logback/logback-variables.properties" />
+    <appender name="CUSTOM-CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <pattern>
+                ${LOG_PATTERN_WITH_COLOR}
+            </pattern>
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CUSTOM-CONSOLE" />
+    </root>
+    <logger name="com.blueviolet.backend" level="DEBUG"/>
+</included>
