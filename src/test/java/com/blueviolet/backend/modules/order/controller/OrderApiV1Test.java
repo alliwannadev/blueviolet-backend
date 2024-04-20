@@ -57,8 +57,6 @@ class OrderApiV1Test {
     @Autowired ProductWarehousingTestHelper productWarehousingTestHelper;
     @Autowired OrderTestHelper orderTestHelper;
     @Autowired StockTestHelper stockTestHelper;
-    @Autowired
-    private DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
     @BeforeEach
     void beforeEach() {
