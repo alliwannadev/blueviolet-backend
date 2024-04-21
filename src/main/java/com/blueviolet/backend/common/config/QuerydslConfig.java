@@ -7,25 +7,44 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
-@RequiredArgsConstructor
 @Configuration
 public class QuerydslConfig {
 
-    @PersistenceContext(unitName = "primaryPersistenceUnit")
-    private final EntityManager primaryEntityManager;
+    @Profile("!prod")
+    @RequiredArgsConstructor
+    @Configuration
+    static class QuerydslDefaultConfig {
 
-    @PersistenceContext(unitName = "secondaryPersistenceUnit")
-    private final EntityManager secondaryEntityManager;
+        private final EntityManager primaryEntityManager;
 
-    @Primary
-    @Bean
-    public JPAQueryFactory primaryQueryFactory() {
-        return new JPAQueryFactory(primaryEntityManager);
+        @Bean
+        public JPAQueryFactory primaryQueryFactory() {
+            return new JPAQueryFactory(primaryEntityManager);
+        }
     }
 
-    @Bean
-    public JPAQueryFactory secondaryQueryFactory() {
-        return new JPAQueryFactory(secondaryEntityManager);
+    @Profile({"prod"})
+    @RequiredArgsConstructor
+    @Configuration
+    static class QuerydslProdConfig {
+
+        @PersistenceContext(unitName = "primaryPersistenceUnit")
+        private final EntityManager primaryEntityManager;
+
+        @PersistenceContext(unitName = "secondaryPersistenceUnit")
+        private final EntityManager secondaryEntityManager;
+
+        @Primary
+        @Bean
+        public JPAQueryFactory primaryQueryFactory() {
+            return new JPAQueryFactory(primaryEntityManager);
+        }
+
+        @Bean
+        public JPAQueryFactory secondaryQueryFactory() {
+            return new JPAQueryFactory(secondaryEntityManager);
+        }
     }
 }
