@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blueviolet
+    username: root
+    password: 123456
+
+  jpa:
+    hibernate.ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+
+jwt:
+  access_secret: Ymx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsLWFjY2Vzcy1zZWNyZXQK
+  refresh_secret: cmVmcmVzaC1zZWNyZXQtYmx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsCg=

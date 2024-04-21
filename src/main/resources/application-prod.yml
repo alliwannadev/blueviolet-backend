@@ -1,0 +1,28 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://${PROD_PRIMARY_RDB_URL}
+      username: ${PROD_PRIMARY_RDB_USERNAME}
+      password: ${PROD_PRIMARY_RDB_PASSWORD}
+  datasource-second:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://${PROD_SECONDARY_RDB_URL}
+      username: ${PROD_SECONDARY_RDB_USERNAME}
+      password: ${PROD_SECONDARY_RDB_PASSWORD}
+
+  jpa:
+    hibernate.ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+
+jwt:
+  access_secret: ${PROD_ACCESS_SECRET}
+  refresh_secret: ${PROD_REFRESH_SECRET}

@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DEV_RDB_URL}
+    username: ${DEV_RDB_USERNAME}
+    password: ${DEV_RDB_PASSWORD}
+
+  jpa:
+    hibernate.ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+
+jwt:
+  access_secret: ${DEV_ACCESS_SECRET}
+  refresh_secret: ${DEV_REFRESH_SECRET}
