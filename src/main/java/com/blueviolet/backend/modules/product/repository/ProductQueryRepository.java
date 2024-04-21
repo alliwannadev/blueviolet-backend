@@ -31,7 +31,7 @@ import static com.blueviolet.backend.modules.product.domain.QProductGroup.produc
 @Repository
 public class ProductQueryRepository {
 
-    private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory primaryQueryFactory;
     private final CategoryRepository categoryRepository;
 
     public Page<SearchProductDto> findAllByCond(
@@ -39,7 +39,7 @@ public class ProductQueryRepository {
             Pageable pageable
     ) {
         String pathName = getCategoryPathName(condition.categoryId());
-        JPAQuery<SearchProductDto> mainQuery = queryFactory
+        JPAQuery<SearchProductDto> mainQuery = primaryQueryFactory
                 .select(
                         new QSearchProductDto(
                                 product.productId,
