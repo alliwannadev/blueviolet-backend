@@ -13,7 +13,6 @@ spring:
     hibernate.ddl-auto: none
     open-in-view: false
     properties:
-      hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
       hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 1000
 
@@ -23,3 +22,8 @@ jwt:
 
 slack:
   webhook-url: ${SLACK_SLOW_QUERY_WEBHOOK_URL}
+
+# local 환경에서만 P6Spy 활성화
+decorator:
+  datasource:
+    enabled: true

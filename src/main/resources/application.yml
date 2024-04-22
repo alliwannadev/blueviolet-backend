@@ -2,6 +2,11 @@ spring:
   profiles:
     active: local
 
+# 기본적으로 P6Spy 비활성화
+decorator:
+  datasource:
+    enabled: false
+
 logging:
   config: classpath:logback/logback-spring.xml
   level:
