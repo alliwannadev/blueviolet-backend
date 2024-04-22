@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS stock (
     primary key (stock_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS user (
     user_id bigint not null auto_increment,
     email varchar(255),
     name varchar(255),
@@ -126,6 +126,13 @@ CREATE TABLE IF NOT EXISTS users (
     phone varchar(255),
     primary key (user_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE user_role (
+    user_role_id bigint NOT NULL AUTO_INCREMENT,
+    user_id bigint,
+    role varchar(10),
+    PRIMARY KEY (`user_role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE category
 ADD CONSTRAINT FK__CATEGORY
@@ -161,3 +168,8 @@ ALTER TABLE product_warehousing
 ADD CONSTRAINT FK__PRODUCT_WAREHOUSING__STOCK
 FOREIGN KEY (stock_id)
 REFERENCES stock (stock_id);
+
+ALTER TABLE user_role
+ADD CONSTRAINT FK__USER_ROLE__USER
+FOREIGN KEY (user_id)
+REFERENCES user (user_id);
