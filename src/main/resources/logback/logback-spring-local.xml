@@ -9,7 +9,6 @@
     </appender>
 
     <!-- Slack Appender -->
-    <springProperty name="SLACK_SLOW_QUERY_WEBHOOK_URL" source="slack.webhook-url"/>
     <springProperty name="PROFILE" source="spring.profiles.active" defaultValue=""/>
     <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
         <webhookUri>${SLACK_SLOW_QUERY_WEBHOOK_URL}</webhookUri>
