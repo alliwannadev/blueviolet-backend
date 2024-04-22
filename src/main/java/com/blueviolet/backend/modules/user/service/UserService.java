@@ -1,5 +1,8 @@
 package com.blueviolet.backend.modules.user.service;
 
+import com.blueviolet.backend.common.constant.Role;
+import com.blueviolet.backend.modules.user.domain.UserRole;
+import com.blueviolet.backend.modules.user.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import com.blueviolet.backend.common.error.BusinessException;
 import com.blueviolet.backend.common.error.ErrorCode;
@@ -16,10 +19,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Transactional
     public User saveNewUser(User newUser) {
-        return userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+        userRoleRepository.save(UserRole.of(savedUser, Role.USER));
+        return savedUser;
     }
 
     @Transactional(readOnly = true)
