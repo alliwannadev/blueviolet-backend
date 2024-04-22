@@ -15,7 +15,11 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
+      hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 1000
 
 jwt:
   access_secret: Ymx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsLWFjY2Vzcy1zZWNyZXQK
   refresh_secret: cmVmcmVzaC1zZWNyZXQtYmx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsCg=
+
+slack:
+  webhook-url: ${SLACK_SLOW_QUERY_WEBHOOK_URL}
