@@ -1,5 +1,7 @@
 package com.blueviolet.backend.common.config;
 
+import com.blueviolet.backend.common.web.interceptors.AdminAuthorityCheckInterceptor;
+import com.blueviolet.backend.modules.admin.authority.service.AdminAuthorityService;
 import lombok.RequiredArgsConstructor;
 import com.blueviolet.backend.common.web.interceptors.AuthenticationCheckInterceptor;
 import com.blueviolet.backend.common.web.resolvers.CurrentUserArgumentResolver;
@@ -20,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final AdminAuthorityService adminAuthorityService;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,12 +30,11 @@ public class WebConfig implements WebMvcConfigurer {
         List<String> staticResourcePaths = Arrays.stream(StaticResourceLocation.values())
                 .flatMap(StaticResourceLocation::getPatterns)
                 .toList();
-        List<String> excludePathPatterns =
+        List<String> authenticationExcludePathPatterns =
                 List.of(
                         "/h2-console/**",
                         "/api/v1/sign-up", "/api/v1/sign-in", "/api/v1/token-regeneration",
-                        "/api/v1/products/**",
-                        "/api/admin/v1/**" // TODO: Admin API는 현재 인증 체크를 하지 않으며 나중에 Admin 권한 체크 기능을 추가할 예정
+                        "/api/v1/products/**"
                 );
 
         registry.addInterceptor(
@@ -42,8 +44,15 @@ public class WebConfig implements WebMvcConfigurer {
                 ))
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns(excludePathPatterns)
+                .excludePathPatterns(authenticationExcludePathPatterns)
                 .excludePathPatterns(staticResourcePaths);
+        registry.addInterceptor(
+                new AdminAuthorityCheckInterceptor(
+                        jwtTokenProvider,
+                        adminAuthorityService
+                ))
+                .order(2)
+                .addPathPatterns("/api/admin/**");
     }
 
     @Override
