@@ -1,0 +1,7 @@
+### 어드민 권한 부여
+POST http://localhost:8080/api/admin/v1/authorities
+Content-Type: application/json
+
+{
+  "userId": 1
+}
