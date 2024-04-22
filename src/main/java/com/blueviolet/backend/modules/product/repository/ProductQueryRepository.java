@@ -80,9 +80,22 @@ public class ProductQueryRepository {
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .fetch();
-        long count = resultQuery.fetch().size();
 
-        return new PageImpl<>(content, pageable, count);
+        Long count = primaryQueryFactory
+                .select(product.productId.countDistinct())
+                .from(productOptionCombination)
+                .join(productOptionCombination.product, product)
+                .join(product.productGroup, productGroup)
+                .join(productGroup.category, category)
+                .where(
+                        category.pathName.like(pathName),
+                        filteringOptionLikeForList("COLOR", condition.colors()),
+                        filteringOptionLikeForList("SIZE", condition.sizes()),
+                        sellingPriceBetween(condition.priceRange())
+                )
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, ObjectUtils.isEmpty(count) ? 0 : count);
     }
 
     private String getCategoryPathName(Long categoryId) {
