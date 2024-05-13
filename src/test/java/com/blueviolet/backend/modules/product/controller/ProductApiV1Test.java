@@ -51,7 +51,7 @@ class ProductApiV1Test {
     @Test
     void givenProductSearchParameters_whenSearchProductList_thenReturnSuccessfulResult() throws Exception {
         // Given
-        Category foundCategory = categoryTestHelper.findOneByPathName("남성>상의>반소매 티셔츠");
+        Category foundCategory = categoryTestHelper.findOneByName("반소매 티셔츠");
 
         // When & Then
         String jsonResponse = mockMvc.perform(

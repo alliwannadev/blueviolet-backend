@@ -60,9 +60,9 @@ public class CategoryTestHelper {
     }
 
     @Transactional(readOnly = true)
-    public Category findOneByPathName(String pathName) {
+    public Category findOneByName(String name) {
         return categoryRepository
-                .findOneByPathName(pathName)
+                .findOneByName(name)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CATEGORY_NOT_FOUND));
     }
 }
