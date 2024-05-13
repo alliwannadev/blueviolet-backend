@@ -5,7 +5,6 @@ import com.blueviolet.backend.common.domain.OrderByNull;
 import com.blueviolet.backend.modules.product.repository.dto.QSearchProductDto;
 import com.blueviolet.backend.modules.product.repository.dto.SearchProductDto;
 import com.blueviolet.backend.modules.product.repository.dto.SearchProductListCond;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -17,8 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import static com.blueviolet.backend.modules.option.domain.QProductOptionCombination.productOptionCombination;
@@ -56,8 +55,8 @@ public class ProductQueryRepository {
                 .join(product.productGroup, productGroup)
                 .where(
                         productGroup.category.categoryId.in(condition.categoryIds()),
-                        filteringOptionLikeForList("COLOR", condition.colors()),
-                        filteringOptionLikeForList("SIZE", condition.sizes()),
+                        colorIn(condition.colors()),
+                        sizeIn(condition.sizes()),
                         sellingPriceBetween(condition.priceRange())
                 )
                 .orderBy(getOrderByStandard(productSortingStandard))
@@ -73,13 +72,21 @@ public class ProductQueryRepository {
                 .join(product.productGroup, productGroup)
                 .where(
                         productGroup.category.categoryId.in(condition.categoryIds()),
-                        filteringOptionLikeForList("COLOR", condition.colors()),
-                        filteringOptionLikeForList("SIZE", condition.sizes()),
+                        colorIn(condition.colors()),
+                        sizeIn(condition.sizes()),
                         sellingPriceBetween(condition.priceRange())
                 )
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, ObjectUtils.isEmpty(count) ? 0 : count);
+    }
+
+    private static BooleanExpression colorIn(List<String> colors) {
+        return CollectionUtils.isEmpty(colors) ? null : productOptionCombination.color.in(colors);
+    }
+
+    private static BooleanExpression sizeIn(List<String> sizes) {
+        return CollectionUtils.isEmpty(sizes) ? null : productOptionCombination.size.in(sizes);
     }
 
     private OrderSpecifier<?> getOrderByStandard(ProductSortingStandard productSortingStandard) {
@@ -93,19 +100,5 @@ public class ProductQueryRepository {
     private static BooleanExpression sellingPriceBetween(SearchProductListCond.PriceRange priceRange) {
         return ObjectUtils.isEmpty(priceRange) ? null :
                 product.sellingPrice.between(priceRange.minPrice(), priceRange.maxPrice());
-    }
-
-    private static BooleanBuilder filteringOptionLikeForList(String optionCode, List<String> optionValueList) {
-        if (ObjectUtils.isEmpty(optionValueList)) {
-            return null;
-        }
-
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        for (String optionValue : optionValueList) {
-            String formatted = MessageFormat.format("%{0}-{1}%", optionCode, optionValue);
-            booleanBuilder.or(productOptionCombination.filteringOption.like(formatted));
-        }
-
-        return booleanBuilder;
     }
 }

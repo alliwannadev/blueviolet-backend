@@ -19,8 +19,10 @@ public class CategoryService {
 
     // TODO: 캐싱을 이용한 성능 개선 필요
     @Transactional(readOnly = true)
-    public List<Long> getChildCategoryIdsByCurrentId(Long categoryId) {
-        return getChildCategoryIdsByIdWithRecursive(categoryId, new ArrayList<>());
+    public List<Long> getDescendantCategoryIdsByCurrentId(Long categoryId) {
+        List<Long> childCategoryIds = getChildCategoryIdsByIdWithRecursive(categoryId, new ArrayList<>());
+        childCategoryIds.add(categoryId);
+        return childCategoryIds;
     }
 
     private List<Long> getChildCategoryIdsByIdWithRecursive(Long categoryId, List<Long> path) {
