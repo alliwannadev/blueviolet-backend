@@ -67,7 +67,7 @@ public class MdcLoggingFilter extends OncePerRequestFilter {
                 MessageFormat.format(
                         "\n {0} {1}",
                         httpMethod,
-                        StringUtils.isBlank(queryString) ? requestUri : requestUri + queryString
+                        StringUtils.isBlank(queryString) ? requestUri : StringUtils.join(requestUri, "?", queryString)
                 ) +
                 (StringUtils.isBlank(authorization) ? "" : MessageFormat.format("\n Authorization: {0}", authorization)) +
                 (StringUtils.isBlank(requestBody) ? "" : MessageFormat.format("\n {0}", requestBody)) +
