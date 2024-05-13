@@ -12,7 +12,7 @@ import com.blueviolet.backend.modules.product.controller.dto.SearchProductRespon
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.helper.ProductTestHelper;
 import com.blueviolet.backend.modules.product.service.ProductService;
-import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
+import com.blueviolet.backend.modules.product.service.dto.SearchProductListParam;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,7 +77,7 @@ class ProductApiV1Test {
         List<SearchProductResponseV1> contentInApiResponse = searchProductListResponse.getData().content();
 
         Page<SearchProductResult> searchProductResult = productService.searchAllByCond(
-                new SearchProductListCond(
+                new SearchProductListParam(
                         foundCategory.getCategoryId(),
                         null,
                         null,

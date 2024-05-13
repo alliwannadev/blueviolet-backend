@@ -1,28 +1,26 @@
 package com.blueviolet.backend.modules.product.repository;
 
-import com.blueviolet.backend.common.error.BusinessException;
-import com.blueviolet.backend.common.error.ErrorCode;
-import com.blueviolet.backend.modules.category.domain.Category;
-import com.blueviolet.backend.modules.category.repository.CategoryRepository;
+import com.blueviolet.backend.common.constant.ProductSortingStandard;
+import com.blueviolet.backend.common.domain.OrderByNull;
 import com.blueviolet.backend.modules.product.repository.dto.QSearchProductDto;
 import com.blueviolet.backend.modules.product.repository.dto.SearchProductDto;
-import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
+import com.blueviolet.backend.modules.product.repository.dto.SearchProductListCond;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-import static com.blueviolet.backend.modules.category.domain.QCategory.category;
 import static com.blueviolet.backend.modules.option.domain.QProductOptionCombination.productOptionCombination;
 import static com.blueviolet.backend.modules.product.domain.QProduct.product;
 import static com.blueviolet.backend.modules.product.domain.QProductGroup.productGroup;
@@ -32,14 +30,14 @@ import static com.blueviolet.backend.modules.product.domain.QProductGroup.produc
 public class ProductQueryRepository {
 
     private final JPAQueryFactory primaryQueryFactory;
-    private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     public Page<SearchProductDto> findAllByCond(
             SearchProductListCond condition,
             Pageable pageable
     ) {
-        String pathName = getCategoryPathName(condition.categoryId());
-        JPAQuery<SearchProductDto> mainQuery = primaryQueryFactory
+        ProductSortingStandard productSortingStandard = ProductSortingStandard.getByCode(condition.sortStandard());
+        List<SearchProductDto> content = primaryQueryFactory
                 .select(
                         new QSearchProductDto(
                                 product.productId,
@@ -56,39 +54,25 @@ public class ProductQueryRepository {
                 .from(productOptionCombination)
                 .join(productOptionCombination.product, product)
                 .join(product.productGroup, productGroup)
-                .join(productGroup.category, category)
                 .where(
-                        category.pathName.like(pathName),
+                        productGroup.category.categoryId.in(condition.categoryIds()),
                         filteringOptionLikeForList("COLOR", condition.colors()),
                         filteringOptionLikeForList("SIZE", condition.sizes()),
                         sellingPriceBetween(condition.priceRange())
-                );
-
-        JPAQuery<SearchProductDto> queryContainingOrderByClause;
-        if (StringUtils.equalsIgnoreCase(condition.sortStandard(), "PRICE_LOW")) {
-            queryContainingOrderByClause = mainQuery.orderBy(product.sellingPrice.asc());
-        } else if (StringUtils.equalsIgnoreCase(condition.sortStandard(), "PRICE_HIGH")) {
-            queryContainingOrderByClause = mainQuery.orderBy(product.sellingPrice.desc());
-        } else {
-            queryContainingOrderByClause = mainQuery;
-        }
-
-        JPAQuery<SearchProductDto> resultQuery = queryContainingOrderByClause.groupBy(product.productId);
-
-        List<SearchProductDto> content =
-                resultQuery
-                        .offset(pageable.getOffset())
-                        .limit(pageable.getPageSize())
-                        .fetch();
+                )
+                .orderBy(getOrderByStandard(productSortingStandard))
+                .groupBy(product.productId)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
 
         Long count = primaryQueryFactory
                 .select(product.productId.countDistinct())
                 .from(productOptionCombination)
                 .join(productOptionCombination.product, product)
                 .join(product.productGroup, productGroup)
-                .join(productGroup.category, category)
                 .where(
-                        category.pathName.like(pathName),
+                        productGroup.category.categoryId.in(condition.categoryIds()),
                         filteringOptionLikeForList("COLOR", condition.colors()),
                         filteringOptionLikeForList("SIZE", condition.sizes()),
                         sellingPriceBetween(condition.priceRange())
@@ -98,12 +82,12 @@ public class ProductQueryRepository {
         return new PageImpl<>(content, pageable, ObjectUtils.isEmpty(count) ? 0 : count);
     }
 
-    private String getCategoryPathName(Long categoryId) {
-        Category foundCategory = categoryRepository
-                .findOneByCategoryId(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CATEGORY_NOT_FOUND));
-
-        return MessageFormat.format("%{0}%", foundCategory.getPathName());
+    private OrderSpecifier<?> getOrderByStandard(ProductSortingStandard productSortingStandard) {
+        return switch (productSortingStandard) {
+            case PRICE_LOW -> new OrderSpecifier<>(Order.ASC, product.sellingPrice);
+            case PRICE_HIGH -> new OrderSpecifier<>(Order.DESC, product.sellingPrice);
+            default -> OrderByNull.DEFAULT;
+        };
     }
 
     private static BooleanExpression sellingPriceBetween(SearchProductListCond.PriceRange priceRange) {

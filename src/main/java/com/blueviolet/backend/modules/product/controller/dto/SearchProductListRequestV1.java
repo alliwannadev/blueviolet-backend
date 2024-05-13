@@ -1,6 +1,6 @@
 package com.blueviolet.backend.modules.product.controller.dto;
 
-import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
+import com.blueviolet.backend.modules.product.service.dto.SearchProductListParam;
 import jakarta.validation.constraints.Positive;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -14,19 +14,19 @@ public record SearchProductListRequestV1(
         String sortStandard,
         Boolean isInStock
 ) {
-    public SearchProductListCond toDto() {
-        SearchProductListCond.PriceRange newPriceRange;
+    public SearchProductListParam toDto() {
+        SearchProductListParam.PriceRange newPriceRange;
         if (ObjectUtils.isEmpty(priceRange)) {
             newPriceRange = null;
         } else {
             String[] priceArray = priceRange.split("~");
-            newPriceRange = new SearchProductListCond.PriceRange(
+            newPriceRange = new SearchProductListParam.PriceRange(
                     Long.parseLong(priceArray[0]),
                     Long.parseLong(priceArray[1])
             );
         }
 
-        return new SearchProductListCond(
+        return new SearchProductListParam(
                 categoryId,
                 colors,
                 sizes,
