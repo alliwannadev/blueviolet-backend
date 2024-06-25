@@ -2,9 +2,7 @@ package com.blueviolet.backend.modules.product.repository;
 
 import com.blueviolet.backend.common.constant.ProductSortingStandard;
 import com.blueviolet.backend.common.domain.OrderByNull;
-import com.blueviolet.backend.modules.product.repository.dto.QSearchProductDto;
-import com.blueviolet.backend.modules.product.repository.dto.SearchProductDto;
-import com.blueviolet.backend.modules.product.repository.dto.SearchProductListCond;
+import com.blueviolet.backend.modules.product.repository.dto.*;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -81,11 +79,51 @@ public class ProductQueryRepository {
         return new PageImpl<>(content, pageable, ObjectUtils.isEmpty(count) ? 0 : count);
     }
 
-    private static BooleanExpression colorIn(List<String> colors) {
+    @Transactional(readOnly = true)
+    public List<GetProductDto> findInfiniteScrollAllByCond(
+            List<Long> categoryIds,
+            Long productId,
+            int pageSize
+    ) {
+        return primaryQueryFactory
+                .select(
+                        new QGetProductDto(
+                                product.productId,
+                                product.productGroup.productGroupId.max(),
+                                product.productCode.max(),
+                                product.productName.max(),
+                                product.modelName.max(),
+                                product.purchasePrice.max(),
+                                product.sellingPrice.max(),
+                                product.description.max(),
+                                product.isDisplayed.max()
+                        )
+                )
+                .from(product)
+                .join(product.productGroup, productGroup)
+                .where(
+                        productGroup.category.categoryId.in(categoryIds),
+                        productIdLt(productId)
+                )
+                .orderBy(product.productId.desc())
+                .groupBy(product.productId)
+                .limit(pageSize + 1)
+                .fetch();
+    }
+
+    private BooleanExpression productIdLt(Long productId) {
+        if (productId == null) {
+            return null;
+        }
+
+        return product.productId.lt(productId);
+    }
+
+    private BooleanExpression colorIn(List<String> colors) {
         return CollectionUtils.isEmpty(colors) ? null : productOptionCombination.color.in(colors);
     }
 
-    private static BooleanExpression sizeIn(List<String> sizes) {
+    private BooleanExpression sizeIn(List<String> sizes) {
         return CollectionUtils.isEmpty(sizes) ? null : productOptionCombination.size.in(sizes);
     }
 
@@ -97,7 +135,7 @@ public class ProductQueryRepository {
         };
     }
 
-    private static BooleanExpression sellingPriceBetween(SearchProductListCond.PriceRange priceRange) {
+    private BooleanExpression sellingPriceBetween(SearchProductListCond.PriceRange priceRange) {
         return ObjectUtils.isEmpty(priceRange) ? null :
                 product.sellingPrice.between(priceRange.minPrice(), priceRange.maxPrice());
     }
