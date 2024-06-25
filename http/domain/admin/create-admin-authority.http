@@ -1,6 +1,7 @@
 ### 어드민 권한 부여
 POST http://localhost:8080/api/admin/v1/authorities
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcxOTMyMjI0MX0.1TRFZGRGvWRQ8T8oygiAOOynR07YgcJB-6koOmNMEbg
 
 {
   "userId": 1
