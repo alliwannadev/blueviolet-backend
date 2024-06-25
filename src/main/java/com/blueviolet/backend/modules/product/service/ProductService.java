@@ -6,7 +6,10 @@ import com.blueviolet.backend.modules.category.service.CategoryService;
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.repository.ProductQueryRepository;
 import com.blueviolet.backend.modules.product.repository.ProductRepository;
+import com.blueviolet.backend.modules.product.repository.dto.GetProductDto;
 import com.blueviolet.backend.modules.product.repository.dto.SearchProductDto;
+import com.blueviolet.backend.modules.product.service.dto.GetProductListForInfiniteScrollParam;
+import com.blueviolet.backend.modules.product.service.dto.GetProductResult;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductListParam;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,24 @@ public class ProductService {
         return result.map(SearchProductDto::toServiceDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<GetProductResult> getInfiniteScrollAllByCond(
+            GetProductListForInfiniteScrollParam param
+    ) {
+        List<Long> descendantCategoryIds = categoryService.getDescendantCategoryIdsByCurrentId(param.categoryId());
+        descendantCategoryIds.add(param.categoryId());
+        List<GetProductDto> result = productQueryRepository.findInfiniteScrollAllByCond(
+                descendantCategoryIds,
+                param.productId(),
+                param.pageSize()
+        );
+
+        return result.stream()
+                .map(GetProductDto::toServiceDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public SearchProductResult getOneByProductId(
             Long productId
     ) {
