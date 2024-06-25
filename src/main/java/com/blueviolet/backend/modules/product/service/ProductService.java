@@ -27,7 +27,7 @@ public class ProductService {
     private final CategoryService categoryService;
 
     @Transactional(readOnly = true)
-    public Page<SearchProductResult> searchAllByCond(
+    public Page<SearchProductResult> getAllByCond(
             SearchProductListParam searchProductListParam,
             Pageable pageable
     ) {
@@ -40,7 +40,7 @@ public class ProductService {
         return result.map(SearchProductDto::toServiceDto);
     }
 
-    public SearchProductResult searchOneByProductId(
+    public SearchProductResult getOneByProductId(
             Long productId
     ) {
         Product foundProduct = productRepository

@@ -76,7 +76,7 @@ class ProductApiV1Test {
                 );
         List<SearchProductResponseV1> contentInApiResponse = searchProductListResponse.getData().content();
 
-        Page<SearchProductResult> searchProductResult = productService.searchAllByCond(
+        Page<SearchProductResult> searchProductResult = productService.getAllByCond(
                 new SearchProductListParam(
                         foundCategory.getCategoryId(),
                         null,

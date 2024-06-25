@@ -24,11 +24,11 @@ public class ProductApiV1 {
     private final ProductService productService;
 
     @GetMapping(ProductApiPathsV1.V1_PRODUCTS)
-    public OkResponse<CustomPageResponseV1<SearchProductResponseV1>> searchAllByCond(
+    public OkResponse<CustomPageResponseV1<SearchProductResponseV1>> getAllByCond(
             @Valid SearchProductListRequestV1 searchProductListRequestV1,
             CustomPageRequestV1 customPageRequestV1
     ) {
-        Page<SearchProductResult> searchProductResultPage = productService.searchAllByCond(
+        Page<SearchProductResult> searchProductResultPage = productService.getAllByCond(
                 searchProductListRequestV1.toDto(),
                 customPageRequestV1.getPageable()
         );
@@ -41,10 +41,10 @@ public class ProductApiV1 {
     }
 
     @GetMapping(ProductApiPathsV1.V1_PRODUCTS_BY_PRODUCT_ID)
-    public OkResponse<SearchProductResponseV1> searchOneByProductId(
+    public OkResponse<SearchProductResponseV1> getOneByProductId(
             @PathVariable @Positive Long productId
     ) {
-        SearchProductResult result = productService.searchOneByProductId(productId);
+        SearchProductResult result = productService.getOneByProductId(productId);
         return OkResponse.of(result.toResponse());
     }
 }
