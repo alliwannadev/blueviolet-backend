@@ -26,7 +26,9 @@ public class ProductOptionCombination extends BaseTimeEntity {
 
     private String combinationName;
 
-    private String filteringOption;
+    private String size;
+
+    private String color;
 
     @Builder(access = AccessLevel.PRIVATE)
     private ProductOptionCombination(
@@ -34,13 +36,15 @@ public class ProductOptionCombination extends BaseTimeEntity {
             String combinationCode,
             String uniqueCombinationCode,
             String combinationName,
-            String filteringOption
+            String size,
+            String color
     ) {
         this.product = product;
         this.combinationCode = combinationCode;
         this.uniqueCombinationCode = uniqueCombinationCode;
         this.combinationName = combinationName;
-        this.filteringOption = filteringOption;
+        this.size = size;
+        this.color = color;
     }
 
     public static ProductOptionCombination of(
@@ -48,14 +52,16 @@ public class ProductOptionCombination extends BaseTimeEntity {
             String combinationCode,
             String uniqueCombinationCode,
             String combinationName,
-            String filteringOption
+            String size,
+            String color
     ) {
         ProductOptionCombination productOptionCombination = ProductOptionCombination
                 .builder()
                 .combinationCode(combinationCode)
                 .uniqueCombinationCode(uniqueCombinationCode)
                 .combinationName(combinationName)
-                .filteringOption(filteringOption)
+                .size(size)
+                .color(color)
                 .build();
 
         // 연관관계 설정

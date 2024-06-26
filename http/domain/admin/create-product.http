@@ -1,14 +1,15 @@
 POST http://localhost:8080/api/admin/v1/products
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcxNTU5NTYwMH0.xqHTVu0pzyusSOE-5TUwprtyeVexe4Q2dzduqi8rEB8
 
 {
   "categoryId": 3,
   "productGroupName": "아디다스 티셔츠",
   "productList": [
     {
-      "productCode": "ADIDAS-CLOTH-001",
-      "productName": "아디다스 티셔츠 - 블랙",
-      "modelName": "MODEL-NAME-001",
+      "productCode": "NIKE-CLOTH-001",
+      "productName": "나이키 티셔츠 - 블랙",
+      "modelName": "MODEL-NAME-003",
       "selectedOptionList": [
         {
           "selectedOptionValues": [
@@ -45,12 +46,12 @@ Content-Type: application/json
       ],
       "purchasePrice": 100,
       "sellingPrice": 200,
-      "description": "아디다스 티셔츠 입니다."
+      "description": "나이키 티셔츠 입니다."
     },
     {
-      "productCode": "ADIDAS-CLOTH-002",
-      "productName": "아디다스 티셔츠 - 화이트",
-      "modelName": "MODEL-NAME-002",
+      "productCode": "NIKE-CLOTH-002",
+      "productName": "나이키 티셔츠 - 화이트",
+      "modelName": "MODEL-NAME-004",
       "selectedOptionList": [
         {
           "selectedOptionValues": [
@@ -71,7 +72,7 @@ Content-Type: application/json
       ],
       "purchasePrice": 100,
       "sellingPrice": 200,
-      "description": "아디다스 티셔츠 입니다."
+      "description": "나이키 티셔츠 입니다."
     }
   ]
 }

@@ -1,175 +1,180 @@
-CREATE TABLE IF NOT EXISTS category (
-    level integer,
-    category_id bigint not null auto_increment,
-    created_at datetime(6),
-    parent_category_id bigint,
-    updated_at datetime(6),
-    name varchar(255),
-    path_name varchar(255),
-    primary key (category_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS CATEGORY (
+    CATEGORY_ID BIGINT NOT NULL AUTO_INCREMENT,
+    PARENT_CATEGORY_ID BIGINT,
+    NAME VARCHAR(255),
+    LEVEL INT,
+    PATH_NAME VARCHAR(255),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (CATEGORY_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS order_item (
-    created_at datetime(6),
-    discounted_price bigint,
-    discounted_sub_total_amount bigint,
-    order_id bigint,
-    order_item_id bigint not null auto_increment,
-    price bigint,
-    product_option_combination_id bigint,
-    quantity bigint,
-    sub_total_amount bigint,
-    updated_at datetime(6),
-    primary key (order_item_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS ORDERS (
+    ORDER_ID BIGINT NOT NULL AUTO_INCREMENT,
+    USER_ID BIGINT,
+    ORDER_NO VARCHAR(255),
+    ORDER_STATUS VARCHAR(255),
+    RECEIVER_NAME VARCHAR(255),
+    RECEIVER_PHONE_NUMBER VARCHAR(255),
+    RECEIVER_ADDR VARCHAR(255),
+    RECEIVER_POSTAL_CODE VARCHAR(255),
+    TOTAL_AMOUNT BIGINT,
+    DISCOUNTED_TOTAL_AMOUNT BIGINT,
+    TOTAL_QUANTITY BIGINT,
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (ORDER_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS orders (
-    created_at datetime(6),
-    discounted_total_amount bigint,
-    order_id bigint not null auto_increment,
-    total_amount bigint,
-    total_quantity bigint,
-    updated_at datetime(6),
-    user_id bigint,
-    order_no varchar(255),
-    order_status varchar(255),
-    receiver_addr varchar(255),
-    receiver_name varchar(255),
-    receiver_phone_number varchar(255),
-    receiver_postal_code varchar(255),
-    primary key (order_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS ORDER_ITEM (
+    ORDER_ITEM_ID BIGINT NOT NULL AUTO_INCREMENT,
+    ORDER_ID BIGINT,
+    PRODUCT_OPTION_COMBINATION_ID BIGINT,
+    PRICE BIGINT,
+    DISCOUNTED_PRICE BIGINT,
+    QUANTITY BIGINT,
+    SUB_TOTAL_AMOUNT BIGINT,
+    DISCOUNTED_SUB_TOTAL_AMOUNT BIGINT,
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (ORDER_ITEM_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS product (
-    created_at datetime(6),
-    product_group_id bigint,
-    product_id bigint not null auto_increment,
-    purchase_price bigint,
-    selling_price bigint,
-    updated_at datetime(6),
-    description varchar(255),
-    display_yn varchar(255) check (display_yn in ('N','Y')),
-    model_name varchar(255),
-    product_code varchar(255),
-    product_name varchar(255),
-    primary key (product_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS PRODUCT_GROUP (
+    PRODUCT_GROUP_ID BIGINT NOT NULL AUTO_INCREMENT,
+    CATEGORY_ID BIGINT,
+    PRODUCT_GROUP_NAME VARCHAR(255),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (PRODUCT_GROUP_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS product_group (
-    category_id bigint,
-    created_at datetime(6),
-    product_group_id bigint not null auto_increment,
-    updated_at datetime(6),
-    product_group_name varchar(255),
-    primary key (product_group_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS PRODUCT (
+    PRODUCT_ID BIGINT NOT NULL AUTO_INCREMENT,
+    PRODUCT_GROUP_ID BIGINT,
+    PRODUCT_CODE VARCHAR(255),
+    PRODUCT_NAME VARCHAR(255),
+    MODEL_NAME VARCHAR(255),
+    PURCHASE_PRICE BIGINT,
+    SELLING_PRICE BIGINT,
+    DESCRIPTION VARCHAR(255),
+    DISPLAY_YN CHAR(1),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (PRODUCT_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS product_option (
-    created_at datetime(6),
-    product_option_combination_id bigint,
-    product_option_id bigint not null auto_increment,
-    updated_at datetime(6),
-    option_code varchar(255),
-    option_name varchar(255),
-    option_value varchar(255),
-    option_value_name varchar(255),
-    primary key (product_option_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS PRODUCT_OPTION (
+    PRODUCT_OPTION_ID BIGINT NOT NULL AUTO_INCREMENT,
+    PRODUCT_OPTION_COMBINATION_ID BIGINT,
+    OPTION_CODE VARCHAR(255),
+    OPTION_NAME VARCHAR(255),
+    OPTION_VALUE VARCHAR(255),
+    OPTION_VALUE_NAME VARCHAR(255),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (PRODUCT_OPTION_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS product_option_combination (
-    created_at datetime(6),
-    product_id bigint,
-    product_option_combination_id bigint not null auto_increment,
-    updated_at datetime(6),
-    combination_code varchar(255),
-    combination_name varchar(255),
-    filtering_option varchar(255),
-    unique_combination_code varchar(255),
-    primary key (product_option_combination_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS PRODUCT_OPTION_COMBINATION (
+    PRODUCT_OPTION_COMBINATION_ID BIGINT NOT NULL AUTO_INCREMENT,
+    PRODUCT_ID BIGINT,
+    COMBINATION_CODE VARCHAR(255),
+    UNIQUE_COMBINATION_CODE VARCHAR(255),
+    COMBINATION_NAME VARCHAR(255),
+    COLOR VARCHAR(255),
+    SIZE VARCHAR(255),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (PRODUCT_OPTION_COMBINATION_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS product_warehousing (
-    warehousing_date date,
-    created_at datetime(6),
-    product_option_combination_id bigint,
-    quantity bigint,
-    stock_id bigint,
-    updated_at datetime(6),
-    warehousing_id bigint not null auto_increment,
-    primary key (warehousing_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS PRODUCT_WAREHOUSING (
+    WAREHOUSING_ID BIGINT NOT NULL AUTO_INCREMENT,
+    STOCK_ID BIGINT,
+    WAREHOUSING_DATE DATE,
+    PRODUCT_OPTION_COMBINATION_ID BIGINT,
+    QUANTITY BIGINT,
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (WAREHOUSING_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS refresh_token (
-    created_at datetime(6),
-    refresh_token_id bigint not null auto_increment,
-    updated_at datetime(6),
-    user_id bigint,
-    token_value varchar(255),
-    primary key (refresh_token_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS REFRESH_TOKEN (
+    REFRESH_TOKEN_ID BIGINT NOT NULL AUTO_INCREMENT,
+    USER_ID BIGINT,
+    TOKEN_VALUE VARCHAR(255),
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (REFRESH_TOKEN_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS stock (
-    created_at datetime(6),
-    product_option_combination_id bigint,
-    quantity bigint,
-    stock_id bigint not null auto_increment,
-    updated_at datetime(6),
-    product_option_combination_name varchar(255),
-    primary key (stock_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS STOCK (
+    STOCK_ID BIGINT NOT NULL AUTO_INCREMENT,
+    PRODUCT_OPTION_COMBINATION_ID BIGINT,
+    PRODUCT_OPTION_COMBINATION_NAME VARCHAR(255),
+    QUANTITY BIGINT,
+    CREATED_AT DATETIME,
+    UPDATED_AT DATETIME,
+    PRIMARY KEY (STOCK_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS user (
-    user_id bigint not null auto_increment,
-    email varchar(255),
-    name varchar(255),
-    password varchar(255),
-    phone varchar(255),
-    primary key (user_id)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS USER (
+    USER_ID BIGINT NOT NULL AUTO_INCREMENT,
+    EMAIL VARCHAR(255),
+    PASSWORD VARCHAR(255),
+    NAME VARCHAR(255),
+    PHONE VARCHAR(255),
+    PRIMARY KEY (USER_ID)
+) ENGINE=INNODB;
 
-CREATE TABLE user_role (
-    user_role_id bigint NOT NULL AUTO_INCREMENT,
-    user_id bigint,
-    role varchar(10),
-    PRIMARY KEY (`user_role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE USER_ROLE (
+    USER_ROLE_ID BIGINT NOT NULL AUTO_INCREMENT,
+    USER_ID BIGINT,
+    ROLE VARCHAR(10),
+    PRIMARY KEY (`USER_ROLE_ID`)
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
 
-ALTER TABLE category
+ALTER TABLE CATEGORY
 ADD CONSTRAINT FK__CATEGORY
-FOREIGN KEY (parent_category_id)
-REFERENCES category (category_id);
+FOREIGN KEY (PARENT_CATEGORY_ID)
+REFERENCES CATEGORY (CATEGORY_ID);
 
-ALTER TABLE order_item
+ALTER TABLE ORDER_ITEM
 ADD CONSTRAINT FK__ORDER_ITEM__ORDERS
-FOREIGN KEY (order_id)
-REFERENCES orders (order_id);
+FOREIGN KEY (ORDER_ID)
+REFERENCES ORDERS (ORDER_ID);
 
-ALTER TABLE product
+ALTER TABLE PRODUCT
 ADD CONSTRAINT FK__PRODUCT__PRODUCT_GROUP
-FOREIGN KEY (product_group_id)
-REFERENCES product_group (product_group_id);
+FOREIGN KEY (PRODUCT_GROUP_ID)
+REFERENCES PRODUCT_GROUP (PRODUCT_GROUP_ID);
 
-ALTER TABLE product_group
+ALTER TABLE PRODUCT_GROUP
 ADD CONSTRAINT FK__PRODUCT_GROUP__CATEGORY
-FOREIGN KEY (category_id)
-REFERENCES category (category_id);
+FOREIGN KEY (CATEGORY_ID)
+REFERENCES CATEGORY (CATEGORY_ID);
 
-ALTER TABLE product_option
+ALTER TABLE PRODUCT_OPTION
 ADD CONSTRAINT FK__PRODUCT_OPTION__PRODUCT_OPTION_COMBINATION
-FOREIGN KEY (product_option_combination_id)
-REFERENCES product_option_combination (product_option_combination_id);
+FOREIGN KEY (PRODUCT_OPTION_COMBINATION_ID)
+REFERENCES PRODUCT_OPTION_COMBINATION (PRODUCT_OPTION_COMBINATION_ID);
 
-ALTER TABLE product_option_combination
+ALTER TABLE PRODUCT_OPTION_COMBINATION
 ADD CONSTRAINT FK__PRODUCT_OPTION_COMBINATION__PRODUCT
-FOREIGN KEY (product_id)
-REFERENCES product (product_id);
+FOREIGN KEY (PRODUCT_ID)
+REFERENCES PRODUCT (PRODUCT_ID);
 
-ALTER TABLE product_warehousing
+ALTER TABLE PRODUCT_WAREHOUSING
 ADD CONSTRAINT FK__PRODUCT_WAREHOUSING__STOCK
-FOREIGN KEY (stock_id)
-REFERENCES stock (stock_id);
+FOREIGN KEY (STOCK_ID)
+REFERENCES STOCK (STOCK_ID);
 
-ALTER TABLE user_role
+ALTER TABLE USER_ROLE
 ADD CONSTRAINT FK__USER_ROLE__USER
-FOREIGN KEY (user_id)
-REFERENCES user (user_id);
+FOREIGN KEY (USER_ID)
+REFERENCES USER (USER_ID);
+
+-- 인덱스 생성
+CREATE INDEX IDX__PRODUCT_OPTION_COMBINATION__COLOR ON PRODUCT_OPTION_COMBINATION(COLOR);
+CREATE INDEX IDX__PRODUCT_OPTION_COMBINATION__SIZE ON PRODUCT_OPTION_COMBINATION(SIZE);
