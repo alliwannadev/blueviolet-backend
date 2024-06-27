@@ -16,6 +16,10 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
 
+  data:
+    redis:
+      url: redis://localhost:6379
+
 jwt:
   access_secret: Ymx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsLWFjY2Vzcy1zZWNyZXQK
   refresh_secret: cmVmcmVzaC1zZWNyZXQtYmx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsCg=
