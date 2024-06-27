@@ -10,8 +10,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -63,7 +63,7 @@ public class ProductQueryRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        Long count = primaryQueryFactory
+        Long totalCount = primaryQueryFactory
                 .select(product.productId.countDistinct())
                 .from(productOptionCombination)
                 .join(productOptionCombination.product, product)
@@ -76,7 +76,11 @@ public class ProductQueryRepository {
                 )
                 .fetchOne();
 
-        return new PageImpl<>(content, pageable, ObjectUtils.isEmpty(count) ? 0 : count);
+        return PageableExecutionUtils.getPage(
+                content,
+                pageable,
+                () -> ObjectUtils.isEmpty(totalCount) ? 0 : totalCount
+        );
     }
 
     @Transactional(readOnly = true)
