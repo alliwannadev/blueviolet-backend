@@ -23,6 +23,11 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
 
+  data:
+    redis:
+      url: redis://${PROD_REDIS_URL}
+      password: ${PROD_REDIS_PASSWORD}
+
 jwt:
   access_secret: ${PROD_ACCESS_SECRET}
   refresh_secret: ${PROD_REFRESH_SECRET}

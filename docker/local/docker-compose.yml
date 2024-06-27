@@ -3,7 +3,6 @@ version: '3'
 services:
   mysql:
     container_name: primary_mysql
-    restart: always
     image: mysql:8.0
     ports:
       - 3306:3306
@@ -11,9 +10,23 @@ services:
       MYSQL_DATABASE: blueviolet
       MYSQL_ROOT_PASSWORD: 123456
       TZ: Asia/Seoul
+    restart: always
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./mysql/my.cnf:/etc/mysql/my.cnf
       - ./mysql/data:/docker-entrypoint-initdb.d
+  redis:
+    container_name: primary_redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - "./redis/data:/data"
+      - "./redis/conf/redis.conf:/usr/local/conf/redis.conf"
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    restart: always
+    command: "redis-server /usr/local/conf/redis.conf"

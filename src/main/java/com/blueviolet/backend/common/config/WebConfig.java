@@ -2,6 +2,7 @@ package com.blueviolet.backend.common.config;
 
 import com.blueviolet.backend.common.web.interceptors.AdminAuthorityCheckInterceptor;
 import com.blueviolet.backend.modules.admin.authority.service.AdminAuthorityService;
+import com.blueviolet.backend.modules.user.repository.UserCacheRepository;
 import lombok.RequiredArgsConstructor;
 import com.blueviolet.backend.common.web.interceptors.AuthenticationCheckInterceptor;
 import com.blueviolet.backend.common.web.resolvers.CurrentUserArgumentResolver;
@@ -26,6 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
     private final UserService userService;
     private final AdminAuthorityService adminAuthorityService;
 
+    private final UserCacheRepository userCacheRepository;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 인증 체크 인터셉터
@@ -42,7 +45,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(
                 new AuthenticationCheckInterceptor(
                         jwtTokenProvider,
-                        userService
+                        userService,
+                        userCacheRepository
                 ))
                 .order(1)
                 .addPathPatterns("/**")
