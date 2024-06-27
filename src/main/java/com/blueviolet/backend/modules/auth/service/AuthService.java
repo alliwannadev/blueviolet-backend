@@ -1,5 +1,6 @@
 package com.blueviolet.backend.modules.auth.service;
 
+import com.blueviolet.backend.modules.user.repository.UserCacheRepository;
 import lombok.RequiredArgsConstructor;
 import com.blueviolet.backend.common.dto.TokenInfo;
 import com.blueviolet.backend.common.error.BusinessException;
@@ -25,6 +26,8 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
 
+    private final UserCacheRepository userCacheRepository;
+
     @Transactional
     public void signUp(SignUpRequestV1 signUpRequestV1) {
         String rawPassword = signUpRequestV1.getPassword();
@@ -38,7 +41,7 @@ public class AuthService {
         User findUser = userService
                 .getOptionalOneByEmail(signInRequestV1.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_EMAIL_OR_PASSWORD));
-
+        userCacheRepository.save(findUser);
         authValidationService.validateIfMatchesPassword(
                 signInRequestV1.getPassword(),
                 findUser.getPassword()
