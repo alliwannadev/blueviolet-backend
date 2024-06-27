@@ -1,5 +1,6 @@
 package com.blueviolet.backend.modules.admin.option;
 
+import com.blueviolet.backend.common.constant.OptionCode;
 import com.blueviolet.backend.modules.admin.product.service.AdminProductQueryService;
 import com.blueviolet.backend.modules.admin.product.service.dto.CreateProductParam;
 import com.blueviolet.backend.modules.option.domain.ProductOption;
@@ -7,6 +8,7 @@ import com.blueviolet.backend.modules.option.domain.ProductOptionCombination;
 import com.blueviolet.backend.modules.option.repository.ProductOptionCombinationRepository;
 import com.blueviolet.backend.modules.option.repository.ProductOptionRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,21 +40,30 @@ public class AdminProductOptionService {
                         String optionCombinationName =
                                 selectedOption.selectedOptionValues()
                                         .stream()
-                                        .map(CreateProductParam.SelectedOptionValue::optionName)
-                                        .collect(Collectors.joining("-"));
-                        String filteringOption =
+                                        .map(selectedOptionValue -> selectedOptionValue.optionName() + ": " + selectedOptionValue.optionValueName())
+                                        .collect(Collectors.joining(", "));
+                        String size =
                                 selectedOption.selectedOptionValues()
                                         .stream()
-                                        .map(optionValue -> optionValue.optionCode() + "-" + optionValue.optionValue())
-                                        .collect(Collectors.joining(","));
-                        String productOptionCombinationCode = productCode + "-" + optionCombinationCode;
-                        String productOptionCombinationName = productName + "-" + optionCombinationName;
+                                        .filter(selectedOptionValue -> selectedOptionValue.optionCode().equalsIgnoreCase(OptionCode.SIZE.getCode()))
+                                        .findFirst()
+                                        .map(CreateProductParam.SelectedOptionValue::optionValue)
+                                        .orElse(null);
+                        String color =
+                                selectedOption.selectedOptionValues()
+                                        .stream()
+                                        .filter(selectedOptionValue -> selectedOptionValue.optionCode().equalsIgnoreCase(OptionCode.COLOR.getCode()))
+                                        .findFirst()
+                                        .map(CreateProductParam.SelectedOptionValue::optionValue)
+                                        .orElse(null);
+
                         ProductOptionCombination savedProductOptionCombination =
                                 createProductOptionCombination(
                                         productCode,
-                                        productOptionCombinationCode,
-                                        productOptionCombinationName,
-                                        filteringOption
+                                        StringUtils.join(productCode, "-", optionCombinationCode),
+                                        StringUtils.join(productName, " (", optionCombinationName, ")"),
+                                        size,
+                                        color
                                 );
 
                         selectedOption
@@ -94,7 +105,8 @@ public class AdminProductOptionService {
             String productCode,
             String productOptionCombinationCode,
             String productOptionCombinationName,
-            String filteringOption
+            String size,
+            String color
     ) {
         return productOptionCombinationRepository.save(
                 ProductOptionCombination.of(
@@ -102,7 +114,8 @@ public class AdminProductOptionService {
                         productOptionCombinationCode,
                         getUniqueCombinationCode(productOptionCombinationCode),
                         productOptionCombinationName,
-                        filteringOption
+                        size,
+                        color
                 )
         );
     }

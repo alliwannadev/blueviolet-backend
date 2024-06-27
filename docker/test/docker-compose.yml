@@ -17,3 +17,16 @@ services:
     volumes:
       - ./mysql/my.cnf:/etc/mysql/my.cnf
       - ./mysql/data:/docker-entrypoint-initdb.d
+  redis:
+    container_name: primary_redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - "./redis/data:/data"
+      - "./redis/conf/redis.conf:/usr/local/conf/redis.conf"
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    restart: always
+    command: "redis-server /usr/local/conf/redis.conf"

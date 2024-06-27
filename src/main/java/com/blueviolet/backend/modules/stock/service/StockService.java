@@ -1,7 +1,5 @@
 package com.blueviolet.backend.modules.stock.service;
 
-import com.blueviolet.backend.common.error.BusinessException;
-import com.blueviolet.backend.common.error.ErrorCode;
 import com.blueviolet.backend.modules.stock.domain.Stock;
 import com.blueviolet.backend.modules.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +19,11 @@ public class StockService {
         return stockRepository.findOneByProductOptionCombinationId(productOptionCombinationId);
     }
 
-    @Transactional(readOnly = true)
-    public Stock getOneById(Long stockId) {
+    // TODO: 해당 방식은 데드락이 발생할 수 있기 때문에 이후에 다른 방법을 적용하여 개선해야 함
+    @Transactional
+    public Stock getOneByIdWithLock(Long stockId) {
         return stockRepository
-                .findById(stockId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.STOCK_NOT_FOUND));
+                .findOneByStockIdWithLock(stockId);
     }
 
     @Transactional
@@ -46,7 +44,7 @@ public class StockService {
             Long stockId,
             Long quantity
     ) {
-        Stock foundStock = getOneById(stockId);
+        Stock foundStock = getOneByIdWithLock(stockId);
         foundStock.increaseQuantity(quantity);
     }
 
@@ -55,7 +53,7 @@ public class StockService {
             Long stockId,
             Long quantity
     ) {
-        Stock foundStock = getOneById(stockId);
+        Stock foundStock = getOneByIdWithLock(stockId);
         foundStock.decreaseQuantity(quantity);
     }
 }

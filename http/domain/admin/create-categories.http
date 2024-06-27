@@ -1,5 +1,6 @@
 POST http://localhost:8080/api/admin/v1/categories
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJAdGVzdC5jb20iLCJ1c2VySWQiOjEsImV4cCI6MTcxNTU5NTYwMH0.xqHTVu0pzyusSOE-5TUwprtyeVexe4Q2dzduqi8rEB8
 
 {
   "categories": [

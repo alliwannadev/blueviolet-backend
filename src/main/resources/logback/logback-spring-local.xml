@@ -8,8 +8,39 @@
         </layout>
     </appender>
 
+    <!-- Slack Appender -->
+    <springProperty name="PROFILE" source="spring.profiles.active" defaultValue=""/>
+    <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_SLOW_QUERY_WEBHOOK_URL}</webhookUri>
+        <channel>#slow-query</channel>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                [Slow Query 발생]%n 발생 일시: %d{yyyy-MM-dd HH:mm:ss}%n%n 서버 환경: Blueviolet - ${PROFILE}%n%n 엔드 포인트: %X{endpoint:-None}%n%n 메시지: %msg%n%n
+            </pattern>
+        </layout>
+        <username>Slow Query Bot</username>
+        <iconEmoji>:anger:</iconEmoji>
+        <colorCoding>true</colorCoding>
+    </appender>
+
+    <appender name="ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>
+                    return logger.startsWith("org.hibernate.SQL_SLOW") ||
+                            message.toLowerCase().contains("slow query");
+                </expression>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>NEUTRAL</OnMatch>
+        </filter>
+        <appender-ref ref="SLACK"/>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="CUSTOM-CONSOLE" />
+        <appender-ref ref="ASYNC_SLACK"/>
     </root>
     <logger name="com.blueviolet.backend" level="DEBUG"/>
 </included>

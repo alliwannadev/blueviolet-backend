@@ -13,9 +13,21 @@ spring:
     hibernate.ddl-auto: none
     open-in-view: false
     properties:
-      hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
+      hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 1000
+
+  data:
+    redis:
+      url: redis://localhost:6379
 
 jwt:
   access_secret: Ymx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsLWFjY2Vzcy1zZWNyZXQK
   refresh_secret: cmVmcmVzaC1zZWNyZXQtYmx1ZXZpb2xldC1iYWNrZW5kLWxvY2FsCg=
+
+slack:
+  webhook-url: ${SLACK_SLOW_QUERY_WEBHOOK_URL}
+
+# local 환경에서만 P6Spy 활성화
+decorator:
+  datasource:
+    enabled: true

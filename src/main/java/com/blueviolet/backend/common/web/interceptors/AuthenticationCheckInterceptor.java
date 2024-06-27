@@ -1,5 +1,7 @@
 package com.blueviolet.backend.common.web.interceptors;
 
+import com.blueviolet.backend.common.security.JwtUtil;
+import com.blueviolet.backend.modules.user.repository.UserCacheRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,21 +23,27 @@ public class AuthenticationCheckInterceptor implements HandlerInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final UserCacheRepository userCacheRepository;
 
     @Override
     public boolean preHandle(
             HttpServletRequest request,
             HttpServletResponse response,
             Object handler
-    ) throws Exception {
-        String token = resolveToken(request);
+    ) {
+        String token = JwtUtil.resolveToken(request.getHeader(HttpHeaders.AUTHORIZATION));
 
         if (StringUtils.hasText(token) &&
             jwtTokenProvider.validateToken(token, TokenType.ACCESS_TOKEN)
         ) {
             Long userId = jwtTokenProvider.getUserId(token, TokenType.ACCESS_TOKEN);
-            userService.getOptionalOneByUserId(userId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED));
+            userCacheRepository
+                    .getUserByUserId(userId)
+                    .orElseGet(
+                            () -> userService
+                                    .getOptionalOneByUserId(userId)
+                                    .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED))
+                    );
 
             return true;
         }
@@ -47,15 +55,5 @@ public class AuthenticationCheckInterceptor implements HandlerInterceptor {
                 )
         );
         throw new BusinessException(ErrorCode.UNAUTHORIZED);
-    }
-
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        return null;
     }
 }

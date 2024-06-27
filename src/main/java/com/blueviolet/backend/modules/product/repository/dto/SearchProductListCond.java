@@ -1,9 +1,9 @@
-package com.blueviolet.backend.modules.product.service.dto;
+package com.blueviolet.backend.modules.product.repository.dto;
 
 import java.util.List;
 
 public record SearchProductListCond(
-        Long categoryId,
+        List<Long> categoryIds,
         List<String> colors,
         List<String> sizes,
         PriceRange priceRange,

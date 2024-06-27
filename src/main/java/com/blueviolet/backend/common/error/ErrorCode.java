@@ -39,7 +39,11 @@ public enum ErrorCode {
 
     // Order
     ORDER_NOT_FOUND(404, "ORDER-001", "요청하신 주문 정보를 찾을 수 없습니다."),
-    ORDER_ITEM_NOT_FOUND(404, "ORDER-002", "요청하신 주문 상품 정보를 찾을 수 없습니다.")
+    ORDER_ITEM_NOT_FOUND(404, "ORDER-002", "요청하신 주문 상품 정보를 찾을 수 없습니다."),
+
+    // Admin
+    ADMIN_AUTHORITY_ALREADY_EXISTS(400, "ADMIN-001", "요청하신 회원은 이미 Admin 권한이 존재합니다."),
+    ADMIN_AUTHORITY_NOT_FOUND(404, "ADMIN-002", "Admin 권한이 존재하지 않습니다."),
     ;
 
     private final int status;

@@ -12,7 +12,7 @@ import com.blueviolet.backend.modules.product.controller.dto.SearchProductRespon
 import com.blueviolet.backend.modules.product.domain.Product;
 import com.blueviolet.backend.modules.product.helper.ProductTestHelper;
 import com.blueviolet.backend.modules.product.service.ProductService;
-import com.blueviolet.backend.modules.product.service.dto.SearchProductListCond;
+import com.blueviolet.backend.modules.product.service.dto.SearchProductListParam;
 import com.blueviolet.backend.modules.product.service.dto.SearchProductResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +51,7 @@ class ProductApiV1Test {
     @Test
     void givenProductSearchParameters_whenSearchProductList_thenReturnSuccessfulResult() throws Exception {
         // Given
-        Category foundCategory = categoryTestHelper.findOneByPathName("남성>상의>반소매 티셔츠");
+        Category foundCategory = categoryTestHelper.findOneByName("반소매 티셔츠");
 
         // When & Then
         String jsonResponse = mockMvc.perform(
@@ -76,8 +76,8 @@ class ProductApiV1Test {
                 );
         List<SearchProductResponseV1> contentInApiResponse = searchProductListResponse.getData().content();
 
-        Page<SearchProductResult> searchProductResult = productService.searchAllByCond(
-                new SearchProductListCond(
+        Page<SearchProductResult> searchProductResult = productService.getAllByCond(
+                new SearchProductListParam(
                         foundCategory.getCategoryId(),
                         null,
                         null,
